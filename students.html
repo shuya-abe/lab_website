@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生向け案内 - 阿部研究室</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="students-page">
+    <header>
+        <div class="container">
+            <h1><a href="index.html">阿部研究室</a></h1>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="index.html">Top</a></li>
+                    <li><a href="index.html#news">News</a></li>
+                    <li><a href="index.html#research">Research</a></li>
+                    <li><a href="index.html#member">Member</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="hero-students">
+            <div class="hero-content card">
+                <h2>FUTの学生諸君へ</h2>
+                <p class="lead">阿部研究室で、未来の「あたりまえ」を一緒に創りませんか？</p>
+                <div class="intro-text">
+                    <p>私たちの研究室は、IoTや5G/6Gといった最先端のネットワーク技術を武器に、社会をより便利に、より面白くすることを目指しています。</p>
+                    <p>技術を学ぶだけでなく、実際に手を動かしてシステムをデザイン・構築・評価する、実学を重視する研究室です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="collaboration" class="collaboration-section card">
+            <h3>社会の課題を、テクノロジーで解決する。</h3>
+            <p>阿部研究室では、<strong>企業との共同研究</strong>や<strong>自治体との地域連携プロジェクト</strong>を積極的に実施したり、地域課題の解決をテーマにした研究を進めたりしています。</p>
+            <p>害獣問題、宿泊施設の無人化、次世代通信インフラなど、実社会の切実な課題に正面から向き合い、役立つシステムを世に送り出すことを目指しています。</p>
+        </section>
+
+        <section id="topics">
+            <h2>ワクワクする卒研テーマがいっぱい！</h2>
+            <div class="research-grid">
+                <div class="card">
+                    <img src="img/mobile_network_6g.png" alt="モバイルネットワーク" class="card-img">
+                    <div class="card-content">
+                        <h3>モバイルネットワーク × 性能向上</h3>
+                        <p>5G/6Gの性能を限界まで引き出すための新しいプロトコルや制御手法を考えます。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="img/digital_twin.png" alt="デジタルツイン" class="card-img">
+                    <div class="card-content">
+                        <h3>デジタルツイン × 害獣対策</h3>
+                        <p>センサーと仮想空間を繋ぎ、地域社会の深刻な課題にテクノロジーで挑みます。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="img/smart_minpaku.png" alt="スマート民泊" class="card-img">
+                    <div class="card-content">
+                        <h3>IoT統合制御 × スマート民泊</h3>
+                        <p>IoT技術で新しい宿泊体験をデザインし、無人管理システムの可能性を追求します。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="img/ai_simulator.png" alt="AIシミュレーター" class="card-img">
+                    <div class="card-content">
+                        <h3>生成AI × 複雑系シミュレーター</h3>
+                        <p>最新のAIを活用し、これまでにない高度なシミュレーション手法を検討します。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collaboration-section theme-policy card">
+                <p><strong>「こんなことがやりたい！」という持ち込みテーマも大歓迎。</strong></p>
+                <p>情報系であれば、ネットワークの枠を超えて興味をとことん追求できる環境です。</p>
+            </div>
+        </section>
+
+        <section id="survey-results">
+            <h2>数字で見る阿部研究室</h2>
+            <p class="survey-intro">研究室のリアルな姿を、卒業生たちの評価から可視化してみました。</p>
+            <div class="survey-grid">
+                <div class="chart-container card">
+                    <h3>自分自身の成長実感（1-5評価）</h3>
+                    <canvas id="growthChart"></canvas>
+                </div>
+                <div class="chart-container card">
+                    <h3>研究室全体の満足度（1-5評価）</h3>
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+            </div>
+
+            
+            <div class="survey-voices">
+                <h3>卒業生が入って良かったと感じたこと</h3>
+                <div class="speech-bubble-container">
+                    
+                    <div class="speech-bubble">
+                        生徒の自主性を重んじる研究室
+                    </div>
+                    
+                    <div class="speech-bubble">
+                        非常に居心地がよかった
+                    </div>
+                    
+                    <div class="speech-bubble">
+                        軽い感じで雑談を先生に振れる雰囲気の良い研究室
+                    </div>
+                    
+                    <div class="speech-bubble">
+                        楽しい研究室でした
+                    </div>
+                    
+                    <div class="speech-bubble">
+                        先生、所属する学生ともに個性がある集団
+                    </div>
+                    
+                    <div class="speech-bubble">
+                        楽しくて居心地が良い研究室
+                    </div>
+                    
+                </div>
+            </div>
+            
+
+            
+            <div class="survey-voices" style="margin-top: 4rem;">
+                <h3>どのような学生が向いている？（卒業生の声）</h3>
+                <div class="speech-bubble-container">
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        物事を調べる力がある学生
+                    </div>
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        根気強い人、情報分野に興味がある人
+                    </div>
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        真面目に努力できる人
+                    </div>
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        プレッシャーに強く、土壇場で底力を出せる人
+                    </div>
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        IoTに関心がある人、IoTで生活を改善したい人
+                    </div>
+                    
+                    <div class="speech-bubble" style="background: rgba(46, 204, 113, 0.08);">
+                        研究室に来るのが好きな学生
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </section>
+
+        <section id="lectures">
+            <h2>担当講義・科目</h2>
+            <div class="lectures-container">
+                <div class="current-lectures">
+                    <h3>現在担当している主な科目</h3>
+                    <div class="lecture-cards">
+                        
+                        <div class="lecture-card card">
+                            <h4>ネットワークシステム論</h4>
+                            <p>ネットワークの基礎から最新技術まで幅広く学びます。</p>
+                        </div>
+                        
+                        <div class="lecture-card card">
+                            <h4>コンピュータアーキテクチャ</h4>
+                            <p>コンピュータの構造と動作原理を学びます。</p>
+                        </div>
+                        
+                        <div class="lecture-card card">
+                            <h4>経営情報実践学演習</h4>
+                            <p>社会や地域問題を取り上げ、IoTシステムを活用することで解決策を提案するPBL科目です。</p>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="past-lectures card">
+                    <h3>これまでの担当科目・関連科目</h3>
+                    <div class="tag-list">
+                        
+                        <span class="lecture-tag">データサイエンス概論</span>
+                        
+                        <span class="lecture-tag">システム工学</span>
+                        
+                        <span class="lecture-tag">FUT実践学演習</span>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="call-to-action">
+            <div class="cta-card card">
+                <h3>見学・相談はいつでもOK！</h3>
+                <p>研究室の雰囲気を見たい、卒研の話を聞きたい学生は、お気軽にTeamsで阿部まで連絡してください。</p>
+                <p class="small">※学内限定の案内です。とことん研究を楽しみたい学生を待っています！</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 . All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        const header = document.querySelector('header');
+        let lastScrollTop = 0;
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Smart Sticky Header Logic
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (window.innerWidth <= 850) {
+                if (navMenu.classList.contains('active')) {
+                    header.classList.remove('header-hidden');
+                    lastScrollTop = scrollTop;
+                    return;
+                }
+
+                if (scrollTop > lastScrollTop && scrollTop > 70) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+            } else {
+                header.classList.remove('header-hidden');
+            }
+            lastScrollTop = Math.max(0, scrollTop);
+        }, { passive: true });
+
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
+
+    
+    <script>
+        const stats = {"growth": [0, 0, 1, 1, 7, 1], "satisfaction": [0, 0, 0, 1, 2, 7]};
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#fff', padding: 20 }
+                }
+            }
+        };
+
+        // 成長実感チャート (Pie)
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(growthCtx, {
+            type: 'pie',
+            data: {
+                labels: ['評価1', '評価2', '評価3', '評価4', '評価5'],
+                datasets: [{
+                    data: stats.growth.slice(1),
+                    backgroundColor: ['#95a5a6', '#7f8c8d', '#3498db', '#2980b9', '#1abc9c'],
+                    borderWidth: 0
+                }]
+            },
+            options: commonOptions
+        });
+
+        // 満足度チャート (Doughnut)
+        const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+        new Chart(satisfactionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['評価1', '評価2', '評価3', '評価4', '評価5'],
+                datasets: [{
+                    data: stats.satisfaction.slice(1),
+                    backgroundColor: ['#e74c3c', '#d35400', '#e67e22', '#f1c40f', '#2ecc71'],
+                    borderWidth: 0
+                }]
+            },
+            options: commonOptions
+        });
+    </script>
+    
+</body>
+</html>

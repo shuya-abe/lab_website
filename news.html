@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEWS - 阿部研究室</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="index.html">阿部研究室</a></h1>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#research">Research</a></li>
+                    <li><a href="index.html#member">Member</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="news-archive">
+            <h2>News Archive</h2>
+            <div class="news-archive-list">
+                
+                <article id="news-0" class="news-full-item card">
+                    <div class="news-header">
+                        <span class="date">2026-03-14</span>
+                        <h3>所属学生の3人が表彰（学長賞、卒業研究発表会 優秀発表賞）されました。</h3>
+                    </div>
+                    
+                    <div class="news-images" style="display: flex; flex-direction: column; gap: 1rem;">
+                        
+                        <div class="news-image">
+                            <img src="img/saitou_award.jpg" alt="所属学生の3人が表彰（学長賞、卒業研究発表会 優秀発表賞）されました。">
+                        </div>
+                        
+                        <div class="news-image">
+                            <img src="img/yamaguchi_award.jpg" alt="所属学生の3人が表彰（学長賞、卒業研究発表会 優秀発表賞）されました。">
+                        </div>
+                        
+                        <div class="news-image">
+                            <img src="img/yoshimura_award.jpg" alt="所属学生の3人が表彰（学長賞、卒業研究発表会 優秀発表賞）されました。">
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="news-description">
+                        <p>齊藤有雅さんが学長賞、山口楓真さんと吉村美結さんが卒業研究発表会 優秀発表賞を受賞しました。</p>
+                    </div>
+                    
+                </article>
+                
+                <article id="news-1" class="news-full-item card">
+                    <div class="news-header">
+                        <span class="date">2026-03-14</span>
+                        <h3>2025年度 学位記授与式が行われました。</h3>
+                    </div>
+                    
+                    
+                    <div class="news-description">
+                        <p>今年度の学位記授与式が開催され、当研究室からは7名の学生が学位を授与されました。</p>
+                    </div>
+                    
+                </article>
+                
+                <article id="news-2" class="news-full-item card">
+                    <div class="news-header">
+                        <span class="date">2026-03-06</span>
+                        <h3>電子情報通信学会 ネットワークシステム研究会にて所属学生の吉村美結さんが研究発表を行いました。</h3>
+                    </div>
+                    
+                    <div class="news-images" style="display: flex; flex-direction: column; gap: 1rem;">
+                        
+                        <div class="news-image">
+                            <img src="img/presentation_ns_20260306.jpg" alt="電子情報通信学会 ネットワークシステム研究会にて所属学生の吉村美結さんが研究発表を行いました。">
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="news-description">
+                        <p>当研究室の学部4年生、吉村美結さんが電子情報通信学会主催のネットワークシステム研究会（沖縄）において発表を行いました。タイトル「深層学習によるトラヒック予測を活用した5Gスライシングにおける動的リソース制御の提案と実装に向けた一検討」</p>
+                    </div>
+                    
+                </article>
+                
+                <article id="news-3" class="news-full-item card">
+                    <div class="news-header">
+                        <span class="date">2026-01-31</span>
+                        <h3>2025年度 卒業研究発表会が行われました。</h3>
+                    </div>
+                    
+                    
+                    <div class="news-description">
+                        <p>今年度の卒業研究発表会が開催され、当研究室からは7名の学生が多彩な研究成果を発表しました。</p>
+                    </div>
+                    
+                </article>
+                
+                <article id="news-4" class="news-full-item card">
+                    <div class="news-header">
+                        <span class="date">2025-12-11</span>
+                        <h3>電子情報通信学会 情報ネットワーク研究会にて研究発表を行いました。</h3>
+                    </div>
+                    
+                    
+                    <div class="news-description">
+                        <p>阿部修也, 長谷川剛, サーバレス実装及びコンテナ実装によるマイクロサービスの性能比較</p>
+                    </div>
+                    
+                </article>
+                
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 . All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        const header = document.querySelector('header');
+        let lastScrollTop = 0;
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Smart Sticky Header Logic
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (window.innerWidth <= 850) {
+                if (navMenu.classList.contains('active')) {
+                    header.classList.remove('header-hidden');
+                    lastScrollTop = scrollTop;
+                    return;
+                }
+
+                if (scrollTop > lastScrollTop && scrollTop > 70) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+            } else {
+                header.classList.remove('header-hidden');
+            }
+            lastScrollTop = Math.max(0, scrollTop);
+        }, { passive: true });
+
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
