@@ -363,6 +363,12 @@ footer {
     transform: translateY(-3px);
 }
 
+.privacy-policy {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
 .interest-tag {
     display: inline-block;
     background: rgba(255, 255, 255, 0.05);
