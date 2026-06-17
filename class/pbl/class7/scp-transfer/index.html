@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>scpでのファイル転送 - 経営情報実践学演習 学生向けリファレンス</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">経営情報実践学演習 学生向けリファレンス</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">ホーム</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 4 調査と計画</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class4/research-workflow/" class="dropdown-item">調査ワークフロー（役割分担と共有）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/planner-operations/" class="dropdown-item">Planner運用（開始日・期限・担当の管理）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/loop-template/" class="dropdown-item">Loop記録テンプレート（比較可能な調査記録）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 6 Linuxとテーマ設計</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class6/linux-basics-for-iot/" class="dropdown-item">Linux基礎（IoT開発向け）</a>
+</li>
+                                    
+<li>
+    <a href="../../class6/theme-architecture/" class="dropdown-item">テーマ収束とシステム全体像の図示</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 7 No Mouse Day Linux操作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../ssh-and-basic-commands/" class="dropdown-item">SSH接続と基本コマンド</a>
+</li>
+                                    
+<li>
+    <a href="../file-editing-cat-nano-vim/" class="dropdown-item">ファイル編集3手法（cat / nano / vim）</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">scpでのファイル転送</a>
+</li>
+                                    
+<li>
+    <a href="../linux-command-reference/" class="dropdown-item">Linuxコマンド早見表（Raspberry Pi実習版）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 8 GPIOと電子工作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class8/gpio-basics/" class="dropdown-item">GPIO基礎と回路の考え方</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/led-blink-python/" class="dropdown-item">LED点滅（Lチカ）実装ガイド</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/sensor-actuator-quickstart/" class="dropdown-item">センサ/アクチュエータ実験の進め方</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">トラブルシューティング</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/" class="dropdown-item">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../file-editing-cat-nano-vim/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../linux-command-reference/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#scp" class="nav-link">scpでのファイル転送</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">概要</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">手順</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">コード</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_4" class="nav-link">解説</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_5" class="nav-link">よくあるミス</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">ミニトラブルシュート</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_7" class="nav-link">他ページへのリンク候補</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="scp">scpでのファイル転送</h1>
+<h2 id="_1">概要</h2>
+<p><code>scp</code> はSSHの通信路を使って、ローカルPCとRaspberry Piの間で安全にファイル転送するコマンドです。</p>
+<p>実習では「Pythonファイルを送る」「ログや結果を持ち帰る」場面で頻繁に使います。</p>
+<h2 id="_2">手順</h2>
+<h3 id="1-pc">1. ローカルPCから送る</h3>
+<ol>
+<li>ターミナルでファイルのある場所に移動する。</li>
+<li><code>scp ローカルファイル ユーザ名@IPアドレス:保存先</code> を実行する。</li>
+<li>SSHログインして <code>ls</code> で転送結果を確認する。</li>
+</ol>
+<h3 id="2-raspberry-pi">2. Raspberry Piから受け取る</h3>
+<ol>
+<li>SSHでログインする。</li>
+<li><code>ls</code> で転送されたファイルを確認する。</li>
+<li><code>cat</code> や <code>python3</code> でファイル内容/実行を確認する。</li>
+</ol>
+<h3 id="3-raspberry-pi">3. Raspberry Piからローカルへ取得する</h3>
+<ol>
+<li>ローカル側のターミナルで実行する。</li>
+<li><code>scp ユーザ名@IPアドレス:リモートファイル .</code> を使う。</li>
+</ol>
+<h3 id="4">4. ディレクトリごと転送する</h3>
+<ol>
+<li><code>-r</code> オプションを使う。</li>
+<li>送受信後に <code>ls</code> で構成を確認する。</li>
+</ol>
+<h2 id="_3">コード</h2>
+<pre><code class="language-bash"># ローカル -&gt; Raspberry Pi
+scp led.py user@192.168.1.10:
+# コメント: 末尾の : は「ホームディレクトリへ保存」の意味
+
+# Raspberry Piへログインして確認
+ssh user@192.168.1.10
+ls
+cat led.py
+
+# Raspberry Pi -&gt; ローカル（現在フォルダへ保存）
+scp user@192.168.1.10:led.py .
+# コメント: 最後の . は「いまいるフォルダ」を表す
+
+# ディレクトリごと送る（-rが必要）
+scp -r project user@192.168.1.10:~/
+
+# ディレクトリごと受け取る
+scp -r user@192.168.1.10:~/project .
+
+# ポート指定の例（授業では通常不要）
+scp -P 22 led.py user@192.168.1.10:
+</code></pre>
+<h2 id="_4">解説</h2>
+<ul>
+<li><code>scp</code> は単発転送に向いており、実習では最も使いやすい方法です。</li>
+<li>パスを明示すると、どこに保存されたか迷いにくくなります。</li>
+<li>転送後に <code>ls</code> で確認する習慣をつけると、デバッグが速くなります。</li>
+<li><code>scp</code> は原則ローカルPC側で実行します（SSH接続中の別マシンではない）。</li>
+<li>ディレクトリ転送時は <code>-r</code> がないと失敗します。</li>
+</ul>
+<h2 id="_5">よくあるミス</h2>
+<ul>
+<li>送信側/受信側のターミナルを取り違える。</li>
+<li><code>:</code> や <code>.</code> を書き忘れて構文エラーになる。</li>
+<li>ファイル名の大文字小文字を間違える。</li>
+<li>転送元パスを引用符で囲まず、空白入りパスで失敗する。</li>
+<li>転送後の確認をせず、古いファイルを実行してしまう。</li>
+</ul>
+<h2 id="_6">ミニトラブルシュート</h2>
+<ul>
+<li><code>No such file or directory</code> が出る。<ul>
+<li>ローカル/リモートのどちらで見つからないのかを確認する。</li>
+</ul>
+</li>
+<li><code>Permission denied</code> が出る。<ul>
+<li>保存先ディレクトリの権限とユーザを確認する。</li>
+</ul>
+</li>
+<li>転送が遅い。<ul>
+<li>画像や大容量ファイルが含まれていないか確認し、必要なファイルだけ転送する。</li>
+</ul>
+</li>
+</ul>
+<h2 id="_7">他ページへのリンク候補</h2>
+<ul>
+<li><a href="../ssh-and-basic-commands/">SSH接続と基本コマンド</a></li>
+<li><a href="../file-editing-cat-nano-vim/">ファイル編集3手法（cat / nano / vim）</a></li>
+<li><a href="../linux-command-reference/">Linuxコマンド早見表（Raspberry Pi実習版）</a></li>
+<li><a href="../../class8/led-blink-python/">LED点滅（Lチカ）実装ガイド</a></li>
+<li><a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

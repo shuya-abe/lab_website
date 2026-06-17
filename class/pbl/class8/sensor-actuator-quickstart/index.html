@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>センサ/アクチュエータ実験の進め方 - 経営情報実践学演習 学生向けリファレンス</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">経営情報実践学演習 学生向けリファレンス</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">ホーム</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 4 調査と計画</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class4/research-workflow/" class="dropdown-item">調査ワークフロー（役割分担と共有）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/planner-operations/" class="dropdown-item">Planner運用（開始日・期限・担当の管理）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/loop-template/" class="dropdown-item">Loop記録テンプレート（比較可能な調査記録）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 6 Linuxとテーマ設計</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class6/linux-basics-for-iot/" class="dropdown-item">Linux基礎（IoT開発向け）</a>
+</li>
+                                    
+<li>
+    <a href="../../class6/theme-architecture/" class="dropdown-item">テーマ収束とシステム全体像の図示</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 7 No Mouse Day Linux操作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class7/ssh-and-basic-commands/" class="dropdown-item">SSH接続と基本コマンド</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/file-editing-cat-nano-vim/" class="dropdown-item">ファイル編集3手法（cat / nano / vim）</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/scp-transfer/" class="dropdown-item">scpでのファイル転送</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/linux-command-reference/" class="dropdown-item">Linuxコマンド早見表（Raspberry Pi実習版）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 8 GPIOと電子工作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../gpio-basics/" class="dropdown-item">GPIO基礎と回路の考え方</a>
+</li>
+                                    
+<li>
+    <a href="../led-blink-python/" class="dropdown-item">LED点滅（Lチカ）実装ガイド</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">センサ/アクチュエータ実験の進め方</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">トラブルシューティング</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/" class="dropdown-item">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../led-blink-python/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">センサ/アクチュエータ実験の進め方</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">概要</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">手順</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_4" class="nav-link">コード</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_5" class="nav-link">解説</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">よくあるミス</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_7" class="nav-link">他ページへのリンク候補</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">センサ/アクチュエータ実験の進め方</h1>
+<h2 id="_2">概要</h2>
+<p>モーションセンサ、傾きセンサ、温湿度センサ、ブザー、LCDなどを試すときの共通手順を整理したページです。個別チュートリアルに入る前の標準フローとして使います。</p>
+<h2 id="_3">手順</h2>
+<h3 id="1">1. 実験テーマを決める</h3>
+<ol>
+<li>入力系（センサ）か出力系（アクチュエータ）かを決める。</li>
+<li>使うピンと必要部品を先に一覧化する。</li>
+</ol>
+<h3 id="2">2. 回路を組む</h3>
+<ol>
+<li>電源OFFで配線する。</li>
+<li>GNDと電源ラインを先に作る。</li>
+<li>信号線をGPIOへ接続する。</li>
+</ol>
+<h3 id="3">3. プログラムを動かす</h3>
+<ol>
+<li>Pythonスクリプトを作成する。</li>
+<li><code>scp</code> でRaspberry Piへ転送する。</li>
+<li><code>ssh</code> でログインして <code>python3</code> で実行する。</li>
+</ol>
+<h3 id="4">4. 結果を記録する</h3>
+<ol>
+<li>成功条件（何が起きたら成功か）を明記する。</li>
+<li>失敗時は配線・ピン番号・権限を順に確認する。</li>
+</ol>
+<h2 id="_4">コード</h2>
+<pre><code class="language-python">import time
+import RPi.GPIO as GPIO
+
+SENSOR_PIN = 17   # コメント: センサ入力ピン（BCM番号）
+BUZZER_PIN = 18   # コメント: ブザー出力ピン（BCM番号）
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(SENSOR_PIN, GPIO.IN)                 # コメント: センサを入力設定
+GPIO.setup(BUZZER_PIN, GPIO.OUT, initial=GPIO.HIGH)  # コメント: ブザー初期OFF
+
+try:
+    while True:
+        detected = GPIO.input(SENSOR_PIN)       # コメント: センサ値を読む
+        if detected:
+            GPIO.output(BUZZER_PIN, GPIO.LOW)   # コメント: 検知時にブザーON
+        else:
+            GPIO.output(BUZZER_PIN, GPIO.HIGH)  # コメント: 未検知時にブザーOFF
+        time.sleep(0.2)                         # コメント: 読み取り間隔
+except KeyboardInterrupt:
+    pass
+finally:
+    GPIO.cleanup()
+</code></pre>
+<h2 id="_5">解説</h2>
+<ul>
+<li>まず「共通フロー」を固定すると、部品が変わっても試行が安定します。</li>
+<li>入力（読む）と出力（動かす）を分けて考えるとデバッグしやすくなります。</li>
+<li>失敗時はコードより先に配線とピン番号を確認するのが近道です。</li>
+</ul>
+<h2 id="_6">よくあるミス</h2>
+<ul>
+<li>配線図と実配線でGNDの列がずれている。</li>
+<li>センサの電源電圧（3.3V/5V）を確認せず接続する。</li>
+<li>実行時エラーを無視し、原因を切り分けない。</li>
+</ul>
+<h2 id="_7">他ページへのリンク候補</h2>
+<ul>
+<li><a href="../gpio-basics/">GPIO基礎と回路の考え方</a></li>
+<li><a href="../led-blink-python/">LED点滅（Lチカ）実装ガイド</a></li>
+<li><a href="../../class7/ssh-and-basic-commands/">SSH接続と基本コマンド</a></li>
+<li><a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

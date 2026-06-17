@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Linuxコマンド早見表（Raspberry Pi実習版） - 経営情報実践学演習 学生向けリファレンス</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">経営情報実践学演習 学生向けリファレンス</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">ホーム</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 4 調査と計画</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class4/research-workflow/" class="dropdown-item">調査ワークフロー（役割分担と共有）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/planner-operations/" class="dropdown-item">Planner運用（開始日・期限・担当の管理）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/loop-template/" class="dropdown-item">Loop記録テンプレート（比較可能な調査記録）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 6 Linuxとテーマ設計</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class6/linux-basics-for-iot/" class="dropdown-item">Linux基礎（IoT開発向け）</a>
+</li>
+                                    
+<li>
+    <a href="../../class6/theme-architecture/" class="dropdown-item">テーマ収束とシステム全体像の図示</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 7 No Mouse Day Linux操作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../ssh-and-basic-commands/" class="dropdown-item">SSH接続と基本コマンド</a>
+</li>
+                                    
+<li>
+    <a href="../file-editing-cat-nano-vim/" class="dropdown-item">ファイル編集3手法（cat / nano / vim）</a>
+</li>
+                                    
+<li>
+    <a href="../scp-transfer/" class="dropdown-item">scpでのファイル転送</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Linuxコマンド早見表（Raspberry Pi実習版）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 8 GPIOと電子工作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class8/gpio-basics/" class="dropdown-item">GPIO基礎と回路の考え方</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/led-blink-python/" class="dropdown-item">LED点滅（Lチカ）実装ガイド</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/sensor-actuator-quickstart/" class="dropdown-item">センサ/アクチュエータ実験の進め方</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">トラブルシューティング</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/" class="dropdown-item">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../scp-transfer/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../class8/gpio-basics/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#linuxraspberry-pi" class="nav-link">Linuxコマンド早見表（Raspberry Pi実習版）</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">概要</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">手順</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">コード</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_4" class="nav-link">解説</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_5" class="nav-link">よくあるミス</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">他ページへのリンク候補</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="linuxraspberry-pi">Linuxコマンド早見表（Raspberry Pi実習版）</h1>
+<h2 id="_1">概要</h2>
+<p>Raspberry Pi実習でよく使うLinuxコマンドを、用途別にまとめたページです。CUI初心者が「何を使えばよいか」を素早く判断できるように構成しています。</p>
+<h2 id="_2">手順</h2>
+<h3 id="1">1. まず環境確認コマンドを実行する</h3>
+<ol>
+<li><code>whoami</code>（ユーザ）</li>
+<li><code>hostname</code>（接続先）</li>
+<li><code>pwd</code>（現在地）</li>
+<li><code>ls -la</code>（一覧）</li>
+</ol>
+<h3 id="2">2. 目的に応じてコマンド群を使い分ける</h3>
+<ol>
+<li>ファイル確認: <code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code></li>
+<li>検索: <code>find</code>, <code>grep</code></li>
+<li>ネットワーク確認: <code>ip a</code>, <code>ping</code></li>
+<li>リソース確認: <code>df -h</code>, <code>free -h</code></li>
+</ol>
+<h3 id="3">3. 実行後に必ず結果を確認する</h3>
+<ol>
+<li>エラー文を読む。</li>
+<li>期待したファイルや出力があるか確認する。</li>
+<li>必要なら履歴（<code>history</code>）で振り返る。</li>
+</ol>
+<h2 id="_3">コード</h2>
+<pre><code class="language-bash"># ===== 基本確認 =====
+whoami                 # コメント: 現在ユーザを確認
+hostname               # コメント: 接続先マシン名を確認
+pwd                    # コメント: 現在ディレクトリ
+ls -la                 # コメント: 隠しファイル込み一覧
+
+# ===== ディレクトリ・ファイル操作 =====
+cd ~                   # コメント: ホームに移動
+cd ..                  # コメント: 1つ上のディレクトリへ
+mkdir -p work/class7   # コメント: ディレクトリをまとめて作成
+touch sample.txt       # コメント: 空ファイル作成
+cp sample.txt sample.bak   # コメント: コピー
+mv sample.bak backup.txt   # コメント: 移動/リネーム
+rm backup.txt          # コメント: ファイル削除（慎重に）
+
+# ===== 内容確認 =====
+cat sample.txt         # コメント: 全文表示
+head -n 5 sample.txt   # コメント: 先頭5行
+tail -n 5 sample.txt   # コメント: 末尾5行
+less sample.txt        # コメント: ページ送り表示（qで終了）
+
+# ===== 検索 =====
+find . -name &quot;*.py&quot;     # コメント: 現在配下のPythonファイルを検索
+grep -n &quot;GPIO&quot; led.py   # コメント: GPIOを含む行を行番号付きで検索
+
+# ===== ネットワーク =====
+ip a                   # コメント: IPアドレス確認
+ping -c 3 8.8.8.8      # コメント: 疎通確認（3回だけ送信）
+
+# ===== リソース確認 =====
+df -h                  # コメント: ディスク使用量
+free -h                # コメント: メモリ使用量
+
+# ===== プロセス確認 =====
+ps aux | grep python   # コメント: Python関連プロセス確認
+top                    # コメント: リアルタイム監視（qで終了）
+
+# ===== パッケージ管理 =====
+sudo apt update        # コメント: パッケージ情報更新
+sudo apt install -y tree  # コメント: パッケージ導入例
+
+# ===== 便利操作 =====
+history                # コメント: コマンド履歴確認
+clear                  # コメント: 画面をクリア
+</code></pre>
+<h2 id="_4">解説</h2>
+<ul>
+<li>迷ったら「環境確認 -&gt; 操作 -&gt; 結果確認」の順で進めます。</li>
+<li><code>find</code> と <code>grep</code> は、ファイル探索と文字列探索の基本セットです。</li>
+<li><code>df -h</code> と <code>free -h</code> は、実行失敗の原因切り分けで効果的です。</li>
+<li><code>history</code> はレポート作成時に実行手順を再現するのに役立ちます。</li>
+</ul>
+<h2 id="_5">よくあるミス</h2>
+<ul>
+<li><code>rm</code> を急いで実行し、復元できない削除を行う。</li>
+<li><code>sudo</code> を必要ない場面でも付けてしまう。</li>
+<li><code>grep</code> や <code>find</code> の検索範囲を広げすぎて、結果が読めなくなる。</li>
+<li><code>top</code> で終了方法（<code>q</code>）が分からず戸惑う。</li>
+</ul>
+<h2 id="_6">他ページへのリンク候補</h2>
+<ul>
+<li><a href="../../class6/linux-basics-for-iot/">Linux基礎（IoT開発向け）</a></li>
+<li><a href="../ssh-and-basic-commands/">SSH接続と基本コマンド</a></li>
+<li><a href="../file-editing-cat-nano-vim/">ファイル編集3手法（cat / nano / vim）</a></li>
+<li><a href="../scp-transfer/">scpでのファイル転送</a></li>
+<li><a href="../../troubleshooting/rpi-zero2w-lite-troubleshooting/">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Raspberry Pi Zero 2 W トラブルシューティング（授業向け） - 経営情報実践学演習 学生向けリファレンス</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">経営情報実践学演習 学生向けリファレンス</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">ホーム</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 4 調査と計画</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class4/research-workflow/" class="dropdown-item">調査ワークフロー（役割分担と共有）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/planner-operations/" class="dropdown-item">Planner運用（開始日・期限・担当の管理）</a>
+</li>
+                                    
+<li>
+    <a href="../../class4/loop-template/" class="dropdown-item">Loop記録テンプレート（比較可能な調査記録）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 6 Linuxとテーマ設計</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class6/linux-basics-for-iot/" class="dropdown-item">Linux基礎（IoT開発向け）</a>
+</li>
+                                    
+<li>
+    <a href="../../class6/theme-architecture/" class="dropdown-item">テーマ収束とシステム全体像の図示</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 7 No Mouse Day Linux操作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class7/ssh-and-basic-commands/" class="dropdown-item">SSH接続と基本コマンド</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/file-editing-cat-nano-vim/" class="dropdown-item">ファイル編集3手法（cat / nano / vim）</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/scp-transfer/" class="dropdown-item">scpでのファイル転送</a>
+</li>
+                                    
+<li>
+    <a href="../../class7/linux-command-reference/" class="dropdown-item">Linuxコマンド早見表（Raspberry Pi実習版）</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Class 8 GPIOと電子工作</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../class8/gpio-basics/" class="dropdown-item">GPIO基礎と回路の考え方</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/led-blink-python/" class="dropdown-item">LED点滅（Lチカ）実装ガイド</a>
+</li>
+                                    
+<li>
+    <a href="../../class8/sensor-actuator-quickstart/" class="dropdown-item">センサ/アクチュエータ実験の進め方</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">トラブルシューティング</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../class8/sensor-actuator-quickstart/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#raspberry-pi-zero-2-w" class="nav-link">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#0" class="nav-link">0. 最初に確認すること（共通）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#1-ssh5" class="nav-link">1. SSH接続でハマる（5項目）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-cui5" class="nav-link">2. CUI操作でハマる（5項目）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3-pcscp5" class="nav-link">3. PCで作ってscp転送時にハマる（5項目）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#4-python5" class="nav-link">4. Python実行でハマる（5項目）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#5-gpio5" class="nav-link">5. GPIO・配線でハマる（5項目）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#6" class="nav-link">6. 相談時に持ってくると解決が早い情報</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">関連ページへのリンク候補</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="raspberry-pi-zero-2-w">Raspberry Pi Zero 2 W トラブルシューティング（授業向け）</h1>
+<p>対象環境:</p>
+<ul>
+<li>Raspberry Pi Zero 2 W</li>
+<li>Raspberry Pi OS Lite 64bit（GUIなし）</li>
+<li>OSインストール、ユーザー、パスワード、ネットワークは教員側で設定済み</li>
+<li>プログラムは基本的にPCで作成し、scpでRaspberry Piへ転送して実行</li>
+</ul>
+<h2 id="0">0. 最初に確認すること（共通）</h2>
+<p>トラブルが起きたら、次の順で切り分けると早いです。</p>
+<ol>
+<li>電源ランプは安定しているか</li>
+<li>PCとRaspberry Piは同じネットワークか</li>
+<li>IPアドレス、ユーザー名、ファイルパスの打ち間違いがないか</li>
+<li>エラーメッセージを1行目から読む（最後だけ見ない）</li>
+</ol>
+<hr />
+<h2 id="1-ssh5">1. SSH接続でハマる（5項目）</h2>
+<h3 id="1-1-ssh">1-1. sshで接続できない（タイムアウト）</h3>
+<ul>
+<li>症状</li>
+<li><code>ssh user@IP</code> を実行しても応答がなくタイムアウトする</li>
+<li>原因</li>
+<li>IPアドレスの打ち間違い</li>
+<li>PCとRaspberry Piが別ネットワーク</li>
+<li>解決方法</li>
+<li>配布されたIPを再確認する（1文字ずつ）</li>
+<li>PC側で <code>ping IPアドレス</code> を実行し疎通確認する</li>
+<li>同じ教室Wi-Fi/有線セグメントにいるか確認する</li>
+</ul>
+<h3 id="1-2-connection-refused">1-2. Connection refused が出る</h3>
+<ul>
+<li>症状</li>
+<li>すぐ <code>Connection refused</code> になる</li>
+<li>原因</li>
+<li>Raspberry Piが未起動、または起動直後でsshサービスが未準備</li>
+<li>解決方法</li>
+<li>電源状態を確認し、起動後30-60秒待って再試行する</li>
+<li>それでも不可なら教員へ連絡し本体側状態を確認する</li>
+</ul>
+<h3 id="1-3-permission-denied">1-3. パスワード入力してもPermission denied</h3>
+<ul>
+<li>症状</li>
+<li><code>Permission denied, please try again.</code></li>
+<li>原因</li>
+<li>ユーザー名ミス</li>
+<li>キーボード配列差（<code>@</code>, <code>:</code>, <code>-</code>, <code>_</code> など）</li>
+<li>解決方法</li>
+<li><code>ssh ユーザー名@IP</code> のユーザー名を配布表と照合する</li>
+<li>パスワードは画面に表示されない仕様なのでそのまま入力する</li>
+<li>3回失敗したら入力内容を紙に書いて確認する</li>
+</ul>
+<h3 id="1-4">1-4. 初回接続メッセージで止まる</h3>
+<ul>
+<li>症状</li>
+<li><code>Are you sure you want to continue connecting (yes/no/[fingerprint])?</code> で進まない</li>
+<li>原因</li>
+<li>初回接続時のホスト鍵確認メッセージで入力待ちになっている</li>
+<li>解決方法</li>
+<li><code>yes</code> と入力して Enter を押す</li>
+<li>次回以降は同じPCから同じ端末へなら表示されない</li>
+</ul>
+<h3 id="1-5">1-5. 接続中に突然切れる</h3>
+<ul>
+<li>症状</li>
+<li>作業中に <code>Connection reset</code> などで切断される</li>
+<li>原因</li>
+<li>Wi-Fi不安定</li>
+<li>電源品質不良</li>
+<li>解決方法</li>
+<li>端末位置を変更し電波状態を改善する</li>
+<li>電源ケーブル・アダプタ接続を確認する</li>
+<li>再接続して直前コマンドを再実行する</li>
+</ul>
+<hr />
+<h2 id="2-cui5">2. CUI操作でハマる（5項目）</h2>
+<h3 id="2-1">2-1. どこで作業しているか分からない</h3>
+<ul>
+<li>症状</li>
+<li>ファイル作成後に「どこに保存されたか不明」になる</li>
+<li>原因</li>
+<li>作業前後のカレントディレクトリ確認が不足している</li>
+<li>解決方法</li>
+<li><code>pwd</code> で現在位置を必ず確認する</li>
+<li><code>ls</code> で中身を見てから <code>cd</code> する</li>
+<li>1操作ごとに「いまどこか」を確認する習慣をつける</li>
+</ul>
+<h3 id="2-2-no-such-file-or-directory">2-2. コマンド実行でNo such file or directory</h3>
+<ul>
+<li>症状</li>
+<li><code>cd</code> や実行時に <code>No such file or directory</code></li>
+<li>原因</li>
+<li>ファイル名・フォルダ名のタイプミス</li>
+<li>全角文字や全角スペース混入</li>
+<li>解決方法</li>
+<li><code>ls</code> で正確な名前を確認して再入力する</li>
+<li>補完（Tabキー）を使って入力ミスを減らす</li>
+<li>日本語名より半角英数字名を優先する</li>
+</ul>
+<h3 id="2-3-permission-denied">2-3. Permission deniedでスクリプト実行不可</h3>
+<ul>
+<li>症状</li>
+<li><code>./script.sh</code> 実行時に <code>Permission denied</code></li>
+<li>原因</li>
+<li>実行権限がない</li>
+<li>解決方法</li>
+<li><code>chmod +x script.sh</code> を実行する</li>
+<li><code>ls -l</code> で権限表示を確認する</li>
+<li>実行は <code>./script.sh</code> の形式を使う</li>
+</ul>
+<h3 id="2-4-sudo">2-4. sudoを付けるべきか分からない</h3>
+<ul>
+<li>症状</li>
+<li>設定変更系コマンドが権限エラーになる</li>
+<li>原因</li>
+<li>一般ユーザー権限と管理者権限の違いが曖昧</li>
+<li>解決方法</li>
+<li>システム設定変更時のみ <code>sudo</code> を使う</li>
+<li>ファイル編集や自作プログラム実行では通常 <code>sudo</code> 不要</li>
+<li>迷ったらまず <code>sudo</code> なしで実行し、エラー内容を確認する</li>
+</ul>
+<h3 id="2-5">2-5. 終了せず電源を抜いてしまう</h3>
+<ul>
+<li>症状</li>
+<li>次回起動時に不調、ファイル破損</li>
+<li>原因</li>
+<li><code>shutdown</code> を実行せずに電源を切っている</li>
+<li>解決方法</li>
+<li>作業終了時は必ず <code>sudo shutdown -h now</code> を実行する</li>
+<li>ランプ消灯を確認してから電源を外す</li>
+</ul>
+<hr />
+<h2 id="3-pcscp5">3. PCで作ってscp転送時にハマる（5項目）</h2>
+<h3 id="3-1-scp">3-1. scpコマンドの向きが逆</h3>
+<ul>
+<li>症状</li>
+<li>転送されたと思ったのにRaspberry Pi側にファイルがない</li>
+<li>原因</li>
+<li>「PC -&gt; Pi」と「Pi -&gt; PC」の記法を混同</li>
+<li>解決方法</li>
+<li>PCからPiへ送る基本形を固定して覚える</li>
+<li><code>scp ローカルファイル ユーザー名@IP:保存先</code> を使う</li>
+<li>転送後にPi側で <code>ls</code> して存在確認する</li>
+</ul>
+<h3 id="3-2-scpno-such-file-or-directory">3-2. scpでNo such file or directory</h3>
+<ul>
+<li>症状</li>
+<li>scp実行直後にパス不正エラー</li>
+<li>原因</li>
+<li>ローカル側パス誤り</li>
+<li>保存先ディレクトリがPi側に存在しない</li>
+<li>解決方法</li>
+<li>PC側でファイルの場所を確認してからscp実行する</li>
+<li>Pi側で <code>mkdir -p 保存先</code> を先に作る</li>
+<li>パスに空白がある場合は引用符で囲む</li>
+</ul>
+<h3 id="3-3">3-3. 転送後に古いコードが動いている</h3>
+<ul>
+<li>症状</li>
+<li>修正したはずの動作に変わらない</li>
+<li>原因</li>
+<li>別名ファイルを転送した</li>
+<li>実行ディレクトリが違う</li>
+<li>解決方法</li>
+<li>実行前に <code>pwd</code> と <code>ls</code> で対象ファイルを確認する</li>
+<li><code>cat ファイル名</code> で最新内容か確認する</li>
+<li>ファイル名を授業内で統一する</li>
+</ul>
+<h3 id="3-4">3-4. 改行コード差でシェルスクリプトが動かない</h3>
+<ul>
+<li>症状</li>
+<li><code>bad interpreter</code> や見慣れない記号エラー</li>
+<li>原因</li>
+<li>Windows改行（CRLF）のまま転送</li>
+<li>解決方法</li>
+<li>エディタの改行コードをLFで保存する</li>
+<li>必要に応じてPi上で <code>dos2unix</code> を使う</li>
+</ul>
+<h3 id="3-5">3-5. 文字コード差で日本語が崩れる</h3>
+<ul>
+<li>症状</li>
+<li>コメントや文字列が文字化け</li>
+<li>原因</li>
+<li>文字コードがUTF-8以外</li>
+<li>解決方法</li>
+<li>エディタ保存形式をUTF-8に統一する</li>
+<li>ターミナル側もUTF-8前提で扱う</li>
+</ul>
+<hr />
+<h2 id="4-python5">4. Python実行でハマる（5項目）</h2>
+<h3 id="4-1-python">4-1. pythonコマンドで起動できない</h3>
+<ul>
+<li>症状</li>
+<li><code>python: command not found</code></li>
+<li>原因</li>
+<li>環境によっては <code>python3</code> が標準</li>
+<li>解決方法</li>
+<li><code>python3 ファイル名.py</code> で実行する</li>
+<li>授業では <code>python3</code> を統一表記にする</li>
+</ul>
+<h3 id="4-2-modulenotfounderror">4-2. ModuleNotFoundError が出る</h3>
+<ul>
+<li>症状</li>
+<li><code>No module named ...</code></li>
+<li>原因</li>
+<li>必要ライブラリ未導入</li>
+<li>ライブラリ名とパッケージ名の取り違え</li>
+<li>解決方法</li>
+<li>エラーメッセージのモジュール名を確認する</li>
+<li>配布手順どおりにインストールする</li>
+<li>同じコマンドを全員で統一する</li>
+</ul>
+<h3 id="4-3-indentationerror">4-3. IndentationError が出る</h3>
+<ul>
+<li>症状</li>
+<li><code>IndentationError</code> や <code>unexpected indent</code></li>
+<li>原因</li>
+<li>インデント崩れ（スペース/タブ混在）</li>
+<li>解決方法</li>
+<li>エディタでインデントをスペース4つに統一する</li>
+<li>問題行の前後を見て字下げを揃える</li>
+<li>まず最小サンプルから再実行する</li>
+</ul>
+<h3 id="4-4">4-4. 実行したらすぐ終了して結果が見えない</h3>
+<ul>
+<li>症状</li>
+<li>何も起きないように見える</li>
+<li>原因</li>
+<li>例外で即終了している</li>
+<li>期待した出力文がない</li>
+<li>解決方法</li>
+<li><code>print()</code> を途中に追加して到達点を確認する</li>
+<li>端末に出たTraceback全文を読む</li>
+<li>1ブロックずつ段階実行して切り分ける</li>
+</ul>
+<h3 id="4-5">4-5. 無限ループを止められない</h3>
+<ul>
+<li>症状</li>
+<li>LED点滅などが止まらない</li>
+<li>原因</li>
+<li><code>while True</code> の停止方法を知らない</li>
+<li>解決方法</li>
+<li>端末で <code>Ctrl + C</code> を押して停止する</li>
+<li>終了処理（例: GPIO cleanup）を <code>except KeyboardInterrupt</code> で書く</li>
+</ul>
+<hr />
+<h2 id="5-gpio5">5. GPIO・配線でハマる（5項目）</h2>
+<h3 id="5-1-led">5-1. LEDが点灯しない</h3>
+<ul>
+<li>症状</li>
+<li>実行してもLED無反応</li>
+<li>原因</li>
+<li>LED極性逆</li>
+<li>GND未接続</li>
+<li>ピン番号の指定ミス</li>
+<li>解決方法</li>
+<li>長い足（アノード）と短い足（カソード）を確認する</li>
+<li>GNDへの経路があるか配線を追う</li>
+<li>配線図とコードのピン番号を一致させる</li>
+</ul>
+<h3 id="5-2-boardbcm">5-2. BOARD番号とBCM番号を混同</h3>
+<ul>
+<li>症状</li>
+<li>想定と別ピンが動く、または無反応</li>
+<li>原因</li>
+<li>物理ピン番号とGPIO番号の混在</li>
+<li>解決方法</li>
+<li>授業では方式を1つに統一する（例: BCM）</li>
+<li><code>GPIO.setmode(GPIO.BCM)</code> と配線図の対応を確認する</li>
+</ul>
+<h3 id="5-3-pi">5-3. 部品やPi本体が熱い</h3>
+<ul>
+<li>症状</li>
+<li>異常発熱、焦げ臭いにおい</li>
+<li>原因</li>
+<li>3.3V/5V配線ミス</li>
+<li>ショート</li>
+<li>解決方法</li>
+<li>直ちに電源を切る</li>
+<li>配線を全外しして最小構成でやり直す</li>
+<li>教員確認後に再通電する</li>
+</ul>
+<h3 id="5-4">5-4. センサー値が不安定</h3>
+<ul>
+<li>症状</li>
+<li>値が大きくぶれる、時々0や異常値</li>
+<li>原因</li>
+<li>配線接触不良</li>
+<li>GND共有不足</li>
+<li>サンプリング条件不適切</li>
+<li>解決方法</li>
+<li>ジャンパ線を挿し直す</li>
+<li>GND共通化を再確認する</li>
+<li>読み取り間隔を適切に設定する</li>
+</ul>
+<h3 id="5-5">5-5. 実験後に次の班が再現できない</h3>
+<ul>
+<li>症状</li>
+<li>同じコードなのに動かない</li>
+<li>原因</li>
+<li>配線を戻していない</li>
+<li>変更箇所が記録されていない</li>
+<li>解決方法</li>
+<li>実験後に配線写真を残す</li>
+<li>「配線図」「使用ピン」「実行コマンド」を3点セットで記録する</li>
+<li>班内で再現確認してから終了する</li>
+</ul>
+<hr />
+<h2 id="6">6. 相談時に持ってくると解決が早い情報</h2>
+<p>質問するときは次を提示してください。</p>
+<ol>
+<li>実行したコマンド（コピペ）</li>
+<li>エラーメッセージ全文</li>
+<li><code>pwd</code> と <code>ls</code> の結果</li>
+<li>配線写真（GPIOを含む全体）</li>
+<li>どこまでできて、どこで止まったか</li>
+</ol>
+<p>この5点が揃っていると、教員・TA・チームメンバーが短時間で原因を特定できます。</p>
+<hr />
+<h2 id="_1">関連ページへのリンク候補</h2>
+<ul>
+<li><a href="../../class6/linux-basics-for-iot/">Linux基礎（IoT開発向け）</a></li>
+<li><a href="../../class7/ssh-and-basic-commands/">SSH接続と基本コマンド</a></li>
+<li><a href="../../class7/linux-command-reference/">Linuxコマンド早見表（Raspberry Pi実習版）</a></li>
+<li><a href="../../class7/scp-transfer/">scpでのファイル転送</a></li>
+<li><a href="../../class8/gpio-basics/">GPIO基礎と回路の考え方</a></li>
+<li><a href="../../class8/led-blink-python/">LED点滅（Lチカ）実装ガイド</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
