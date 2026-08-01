@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>何秒で気づける？ IoT体験 · 福井工業大学</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7FMX3SBTV"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7FMX3SBTV');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root { --cyan:#3fd0ff; --teal:#1ec8b2; --text:#eaf5fa; --muted:#8fabc0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; font-family: "Zen Kaku Gothic New", sans-serif; color: var(--text);
+    background: #07111c;
+  }
+  .hero {
+    position: relative; min-height: 52vh; display: flex; align-items: flex-end;
+    background: #0a1520 center/cover no-repeat;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(7,17,28,.25) 0%, rgba(7,17,28,.88) 100%);
+  }
+  .hero-inner {
+    position: relative; z-index: 1; width: min(720px, 100%); margin: 0 auto;
+    padding: 40px 20px 28px;
+  }
+  .kicker { color: var(--teal); letter-spacing: .12em; font-size: .8rem; margin-bottom: 10px; }
+  h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); line-height: 1.15; margin: 0 0 12px; font-weight: 900; }
+  h1 span { color: var(--cyan); }
+  p { color: var(--muted); line-height: 1.7; margin: 0; }
+  main { max-width: 720px; margin: 0 auto; padding: 8px 20px 48px; }
+  .grid { display: grid; gap: 14px; margin-top: 8px; }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid rgba(130,190,220,.25); border-radius: 16px; padding: 20px;
+    background: rgba(12,28,42,.88); transition: .15s ease;
+  }
+  a.card:hover { border-color: rgba(63,208,255,.5); transform: translateY(-2px); }
+  a.card .t { color: var(--teal); font-size: .72rem; letter-spacing: .1em; margin-bottom: 8px; }
+  a.card h2 { margin: 0 0 6px; font-size: 1.2rem; }
+  a.card p { margin: 0; font-size: .95rem; }
+  footer { margin-top: 36px; color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+  <header class="hero" style="background-image:url('img/keyart.png')">
+    <div class="hero-inner">
+      <div class="kicker">FUKUI UNIV. OF TECHNOLOGY · OPEN CAMPUS 2026</div>
+      <h1>何秒で気づける？<br /><span>IoTのリアルタイム性</span></h1>
+      <p>経営情報学科の体験デモ。スマホやPCから参加できます。</p>
+    </div>
+  </header>
+  <main>
+    <div class="grid">
+      <a class="card" href="mission/"><div class="t">PLAY</div><h2>ミッションを遊ぶ</h2><p>統計 → 逐次 → イベント。異変に何秒で気づける？</p></a>
+      <a class="card" href="explainer/"><div class="t">INTRO</div><h2>異変探しゲームで説明</h2><p>監視カメラゲーの比喩で、IoTの強さを体感。</p></a>
+    </div>
+    <footer>福井工業大学 経営情報学部 経営情報学科 · 阿部修也<br />
+      学科紹介: <a href="https://www.fukui-ut.ac.jp/subject/management/" style="color:var(--cyan)">fukui-ut.ac.jp/subject/management</a>
+    </footer>
+  </main>
+</body>
+</html>

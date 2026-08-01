@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>異変探しゲームでわかる IoT</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7FMX3SBTV"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7FMX3SBTV');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #070d14; --text: #eef6fa; --muted: #8aa3b4;
+    --cyan: #3fd0ff; --teal: #1ec8b2; --alert: #ff6a3d; --warn: #ffd166; --line: rgba(140,190,210,.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; background: #000; color: var(--text); font-family: "Zen Kaku Gothic New", sans-serif; }
+  button { font: inherit; cursor: pointer; }
+  .stage {
+    position: relative; width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16));
+    margin: 0 auto; overflow: hidden;
+    background: radial-gradient(900px 500px at 70% 0%, rgba(63,208,255,.12), transparent 55%), linear-gradient(160deg, #070d14, #102030 70%);
+  }
+  .scene {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .5s ease; padding: clamp(14px, 2.5vw, 28px) clamp(14px, 2.5vw, 28px) 58px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .scene.on { opacity: 1; pointer-events: auto; }
+  .kicker { font-size: .75rem; letter-spacing: .14em; color: var(--teal); }
+  .title { font-weight: 900; line-height: 1.15; margin: 0; font-size: clamp(1.25rem, 3.2vw, 2.3rem); }
+  .title em { font-style: normal; color: var(--cyan); }
+  .sub { color: var(--muted); margin: 0; line-height: 1.55; font-size: clamp(.85rem, 1.5vw, 1.02rem); max-width: 42rem; }
+
+  .hud {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 20;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px clamp(14px, 2.5vw, 24px);
+    background: linear-gradient(transparent, rgba(0,0,0,.8));
+  }
+  .progress { flex: 1; height: 4px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; }
+  .progress > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--teal)); }
+  .meta { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: var(--muted); white-space: nowrap; }
+  .controls { display: flex; gap: 6px; }
+  .btn { border: 1px solid var(--line); background: rgba(15,28,40,.92); color: var(--text); border-radius: 10px; padding: 7px 11px; font-size: .82rem; }
+  .btn.primary { border: 0; background: linear-gradient(135deg, #1aa9d8, #1ec8b2); color: #041018; font-weight: 700; }
+
+  .cams { flex: 1; min-height: 0; display: grid; gap: 7px; }
+  .cams.c12 { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
+  .cams.c6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+  .cam {
+    position: relative; border: 1px solid rgba(120,170,190,.28); border-radius: 8px; overflow: hidden; background: #08131c;
+  }
+  .cam canvas { width: 100%; height: 100%; display: block; image-rendering: auto; }
+  .cam .label {
+    position: absolute; top: 5px; left: 5px; z-index: 3;
+    font-family: "IBM Plex Mono", monospace; font-size: .62rem;
+    background: rgba(0,0,0,.6); padding: 2px 6px; border-radius: 4px; color: #c5dce8;
+  }
+  .cam .rec {
+    position: absolute; top: 5px; right: 5px; z-index: 3; width: 6px; height: 6px; border-radius: 50%;
+    background: #ff4d4d; box-shadow: 0 0 8px #ff4d4d; animation: blink 1.2s infinite;
+  }
+  @keyframes blink { 50% { opacity: .35; } }
+  .cam.suspect { border-color: rgba(255,209,102,.35); }
+  .cam.alerted { border-color: var(--alert); box-shadow: 0 0 0 1px rgba(255,106,61,.5), inset 0 0 30px rgba(255,106,61,.12); }
+
+  .split { flex: 1; min-height: 0; display: grid; gap: 10px; grid-template-columns: 1.25fr .85fr; }
+  @media (max-width: 800px) { .split { grid-template-columns: 1fr; } .cams.c12 { grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(4,1fr);} }
+  .panel {
+    border: 1px solid var(--line); border-radius: 12px; background: rgba(10,20,30,.88);
+    padding: 10px; min-height: 0; display: flex; flex-direction: column; gap: 8px;
+  }
+  .panel h3 { margin: 0; font-size: .86rem; color: var(--cyan); }
+  .log {
+    flex: 1; overflow: hidden; position: relative; border-radius: 8px; background: #07131c;
+    font-family: "IBM Plex Mono", monospace; font-size: .7rem; line-height: 1.45; color: #9ec4d6;
+  }
+  .log .inner { position: absolute; inset: 8px; }
+  .log .hi { color: var(--warn); }
+  .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 11px; font-size: .78rem; font-weight: 700; width: fit-content; }
+  .badge.hard { background: rgba(141,166,182,.12); color: var(--muted); border: 1px solid var(--line); }
+  .badge.mid { background: rgba(255,209,102,.14); color: var(--warn); border: 1px solid rgba(255,209,102,.35); }
+  .badge.cheat { background: rgba(255,106,61,.16); color: #ffb399; border: 1px solid rgba(255,106,61,.45); }
+
+  .toast-alert {
+    border-left: 3px solid var(--alert); background: rgba(255,106,61,.12);
+    padding: 12px; border-radius: 0 10px 10px 0; animation: pop .35s ease;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none;} }
+
+  .hero-art { flex: 1; min-height: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); position: relative; background: #0a1520; }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-art::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(7,13,20,.8), transparent 50%, rgba(7,13,20,.35)); }
+  .hero-copy { position: absolute; left: clamp(14px, 2.5vw, 28px); bottom: 64px; z-index: 2; max-width: 28rem; }
+
+  .map3 { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); margin-top: 6px; }
+  @media (max-width: 800px) { .map3 { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: rgba(8,18,28,.78); }
+  .card .lv { font-size: .7rem; letter-spacing: .1em; margin-bottom: 6px; color: var(--muted); }
+  .card h4 { margin: 0 0 6px; font-size: 1.02rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.5; }
+  .card.c3 { border-color: rgba(255,106,61,.4); }
+  .card.c3 .lv { color: var(--alert); }
+  .card.c2 .lv { color: var(--warn); }
+  .end-line {
+    margin-top: 8px; padding: 12px 14px; border-radius: 12px;
+    border: 1px solid rgba(63,208,255,.35);
+    background: linear-gradient(135deg, rgba(63,208,255,.12), rgba(30,200,178,.08));
+    line-height: 1.55; font-size: clamp(.9rem, 1.7vw, 1.08rem);
+  }
+  .hint-pill { color: var(--muted); font-size: .78rem; }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <section class="scene on" data-scene="0">
+      <div class="kicker">OPEN CAMPUS · IoT EXPLAINER</div>
+      <div class="hero-art">
+        <img class="hero-img" src="keyart.png" alt="" />
+        <div class="hero-copy">
+          <h1 class="title">異変探しゲームでわかる<br /><em>IoTのリアルタイム性</em></h1>
+          <p class="sub" style="margin-top:8px">監視カメラを目で探すあのゲーム。<br />データの届き方を変えると、難易度がチートになる。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="1">
+      <div class="kicker">LEVEL 0 · 素の人間</div>
+      <h2 class="title">カメラ切り替えなし。<em>目だけ</em>で探せ</h2>
+      <p class="sub">12画面を同時監視。異変は小さく、すぐには分からない——視線を動かし続けるしかない。</p>
+      <div class="cams c12" id="cams-hard"></div>
+      <div><span class="badge hard">難易度：つらい</span> <span class="hint-pill">※異変は数秒後に、しかも一瞬だけ</span></div>
+    </section>
+
+    <section class="scene" data-scene="2">
+      <div class="kicker">LEVEL 1 · 逐次データ</div>
+      <h2 class="title">切り替え不可。でも<em>全カメラのログ</em>が流れる</h2>
+      <p class="sub">「ちょっと強い」。異常行は色で分かるが、他カメラのログに挟まって流れる。順に追えば見つかる——切替監視よりは楽。</p>
+      <div class="split">
+        <div class="cams c6" id="cams-stream"></div>
+        <div class="panel">
+          <h3>SEQUENTIAL LOG</h3>
+          <div class="log"><div class="inner" id="stream-log"></div></div>
+          <span class="badge mid">難易度：ちょっと強い</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="3">
+      <div class="kicker">LEVEL 2 · イベント駆動</div>
+      <h2 class="title">異変の瞬間、<em>通知が来る</em></h2>
+      <p class="sub">目を動かさなくていい。意味のある変化だけが届く——監視ゲーとしてはマジチート。</p>
+      <div class="split">
+        <div class="cams c6" id="cams-event"></div>
+        <div class="panel">
+          <h3>EVENT INBOX</h3>
+          <div id="event-box" style="color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:.85rem;padding:8px">待機中… まだ静か</div>
+          <p class="hint-pill">カメラ映像だけでは、まだ誰も気づけていない…</p>
+          <span class="badge cheat" style="margin-top:auto">難易度：マジチート</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="4">
+      <div class="kicker">CONNECT · 今日やること</div>
+      <h2 class="title">これ、そのまま<em>IoT</em></h2>
+      <p class="sub">センサが増えるほど人間の目視は不利。だから「届き方」の設計が勝負になる。</p>
+      <div class="map3">
+        <div class="card c1"><div class="lv">R1 · 統計</div><h4>あとから見るまとめ</h4><p>平均は正常でも、“いま”は溶ける。ダイジェスト録画だけ渡される感じ。</p></div>
+        <div class="card c2"><div class="lv">R2 · 逐次ログ</div><h4>ちょっと強い</h4><p>全センサの生データが流れる。情報量↑。探すのはまだあなた。</p></div>
+        <div class="card c3"><div class="lv">R3 · イベント</div><h4>マジチート</h4><p>変化速度・値の異常など、意味のある変化だけ通知。</p></div>
+      </div>
+      <div class="end-line">IoTの面白さは「つなぐ」ことより、<strong>異変にいま気づけること</strong>。じゃあ何秒で気づける？</div>
+    </section>
+
+    <div class="hud">
+      <div class="meta" id="scene-label">01 / 05</div>
+      <div class="progress"><i id="bar"></i></div>
+      <div class="controls">
+        <button class="btn" id="btn-prev" type="button">戻る</button>
+        <button class="btn" id="btn-pause" type="button">一時停止</button>
+        <button class="btn primary" id="btn-next" type="button">次へ</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const DUR = [6000, 9000, 9500, 9500, 9000];
+  const scenes = [...document.querySelectorAll(".scene")];
+  let idx = 0, playing = true, t0 = performance.now(), acc = 0;
+  const timers = [];
+  const clearTimers = () => { while (timers.length) clearTimeout(timers.pop()); };
+
+  // --- procedural CCTV feeds ---
+  const ROOMS = [
+    { name: "廊下A", wall: "#1a2d3c", floor: "#121c24", accent: "#2a4558", props: "hall" },
+    { name: "入口", wall: "#1c3038", floor: "#101820", accent: "#3a5a48", props: "door" },
+    { name: "倉庫", wall: "#243038", floor: "#141c22", accent: "#4a4030", props: "boxes" },
+    { name: "駐車場", wall: "#152028", floor: "#0e141a", accent: "#2a3840", props: "park" },
+    { name: "作業室", wall: "#1e2c38", floor: "#121820", accent: "#3a5060", props: "desk" },
+    { name: "廊下B", wall: "#182830", floor: "#10161c", accent: "#304850", props: "hall" },
+    { name: "サーバ", wall: "#141c28", floor: "#0c1218", accent: "#203040", props: "racks" },
+    { name: "窓際", wall: "#223040", floor: "#141c24", accent: "#5a7080", props: "window" },
+    { name: "休憩室", wall: "#2a3038", floor: "#181c20", accent: "#485060", props: "desk" },
+    { name: "階段", wall: "#1a2430", floor: "#10161c", accent: "#304050", props: "hall" },
+    { name: "裏口", wall: "#1c2830", floor: "#12181e", accent: "#3a4840", props: "door" },
+    { name: "屋外", wall: "#102018", floor: "#0c1810", accent: "#2a4030", props: "park" },
+  ];
+
+  function drawRoom(ctx, w, h, room, t, anomaly) {
+    ctx.fillStyle = "#070c12";
+    ctx.fillRect(0, 0, w, h);
+    // wall / floor
+    ctx.fillStyle = room.wall;
+    ctx.fillRect(0, 0, w, h * 0.55);
+    ctx.fillStyle = room.floor;
+    ctx.fillRect(0, h * 0.55, w, h * 0.45);
+    // perspective lines
+    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    ctx.beginPath();
+    ctx.moveTo(w * 0.5, h * 0.55); ctx.lineTo(0, h); ctx.moveTo(w * 0.5, h * 0.55); ctx.lineTo(w, h);
+    ctx.stroke();
+
+    const flicker = 0.92 + Math.sin(t * 0.008 + room._seed) * 0.04;
+
+    if (room.props === "door") {
+      const open = anomaly ? 0.35 + Math.sin(t * 0.01) * 0.08 : 0.08;
+      ctx.fillStyle = "#0a1016";
+      ctx.fillRect(w * 0.38, h * 0.18, w * 0.24, h * 0.42);
+      ctx.fillStyle = room.accent;
+      ctx.save();
+      ctx.translate(w * 0.38, h * 0.18);
+      ctx.transform(1, 0, open, 1, 0, 0);
+      ctx.fillRect(0, 0, w * 0.22, h * 0.42);
+      ctx.fillStyle = "#c9a227";
+      ctx.beginPath(); ctx.arc(w * 0.18, h * 0.22, 2, 0, 7); ctx.fill();
+      ctx.restore();
+    } else if (room.props === "boxes") {
+      for (let i = 0; i < 4; i++) {
+        ctx.fillStyle = i % 2 ? "#3a3228" : "#2e2820";
+        const bx = w * (0.15 + i * 0.18), by = h * (0.48 - (i % 2) * 0.06);
+        ctx.fillRect(bx, by, w * 0.14, h * 0.16);
+      }
+      if (anomaly) {
+        // box slightly shifted / vibrating
+        const j = Math.sin(t * 0.04) * 3;
+        ctx.fillStyle = "#4a3a28";
+        ctx.fillRect(w * 0.55 + j, h * 0.42, w * 0.12, h * 0.14);
+      }
+    } else if (room.props === "desk") {
+      ctx.fillStyle = "#2a3844";
+      ctx.fillRect(w * 0.2, h * 0.42, w * 0.55, h * 0.08);
+      ctx.fillStyle = "#1a2830";
+      ctx.fillRect(w * 0.28, h * 0.28, w * 0.22, h * 0.14);
+      // monitor glow
+      ctx.fillStyle = `rgba(80,180,220,${0.15 * flicker})`;
+      ctx.fillRect(w * 0.3, h * 0.3, w * 0.18, h * 0.1);
+      if (anomaly) {
+        ctx.fillStyle = `rgba(255,120,60,${0.25 + Math.sin(t * 0.05) * 0.15})`;
+        ctx.fillRect(w * 0.3, h * 0.3, w * 0.18, h * 0.1);
+      }
+    } else if (room.props === "racks") {
+      for (let i = 0; i < 3; i++) {
+        ctx.fillStyle = "#15202a";
+        ctx.fillRect(w * (0.18 + i * 0.22), h * 0.2, w * 0.16, h * 0.4);
+        for (let j = 0; j < 5; j++) {
+          ctx.fillStyle = (Math.sin(t * 0.01 + i + j) > 0) ? "#3dd68c" : "#1a4030";
+          if (anomaly && i === 1) ctx.fillStyle = Math.sin(t * 0.08 + j) > 0 ? "#ff6a3d" : "#401810";
+          ctx.fillRect(w * (0.2 + i * 0.22), h * (0.25 + j * 0.06), 4, 4);
+        }
+      }
+    } else if (room.props === "window") {
+      ctx.fillStyle = `rgba(120,170,200,${0.2 * flicker})`;
+      ctx.fillRect(w * 0.15, h * 0.12, w * 0.7, h * 0.35);
+      ctx.strokeStyle = "rgba(200,220,230,0.25)";
+      ctx.strokeRect(w * 0.15, h * 0.12, w * 0.7, h * 0.35);
+      ctx.beginPath(); ctx.moveTo(w * 0.5, h * 0.12); ctx.lineTo(w * 0.5, h * 0.47); ctx.stroke();
+      if (anomaly) {
+        // shadow passes window briefly
+        const x = ((t * 0.04) % (w * 1.4)) - w * 0.2;
+        ctx.fillStyle = "rgba(0,0,0,0.35)";
+        ctx.fillRect(x, h * 0.14, w * 0.12, h * 0.3);
+      }
+    } else if (room.props === "park") {
+      ctx.fillStyle = "#1a2818";
+      ctx.fillRect(0, h * 0.4, w, h * 0.6);
+      ctx.fillStyle = "#2a3830";
+      ctx.fillRect(w * 0.1, h * 0.55, w * 0.35, h * 0.18);
+      ctx.fillStyle = "#203028";
+      ctx.fillRect(w * 0.55, h * 0.52, w * 0.3, h * 0.16);
+      if (anomaly) {
+        ctx.fillStyle = "rgba(10,10,10,0.7)";
+        const px = w * 0.4 + Math.sin(t * 0.02) * w * 0.05;
+        ctx.beginPath();
+        ctx.ellipse(px, h * 0.62, w * 0.04, h * 0.08, 0, 0, 7);
+        ctx.fill();
+      }
+    } else {
+      // hall
+      ctx.fillStyle = room.accent;
+      ctx.fillRect(w * 0.42, h * 0.2, w * 0.16, h * 0.35);
+      ctx.fillStyle = "rgba(255,220,150,0.08)";
+      ctx.beginPath(); ctx.moveTo(w * 0.5, h * 0.15); ctx.lineTo(w * 0.2, h); ctx.lineTo(w * 0.8, h); ctx.fill();
+      if (anomaly) {
+        const x = w * 0.48 + Math.sin(t * 0.015) * 4;
+        ctx.fillStyle = "rgba(8,8,8,0.65)";
+        ctx.beginPath();
+        ctx.ellipse(x, h * 0.58, w * 0.035, h * 0.09, 0, 0, 7);
+        ctx.fill();
+        ctx.fillRect(x - w * 0.02, h * 0.42, w * 0.04, h * 0.16);
+      }
+    }
+
+    // CCTV overlays
+    ctx.fillStyle = "rgba(0,0,0,0.15)";
+    for (let y = 0; y < h; y += 3) ctx.fillRect(0, y, w, 1);
+    ctx.strokeStyle = "rgba(180,220,240,0.12)";
+    ctx.strokeRect(4, 4, w - 8, h - 8);
+    // timestamp
+    ctx.fillStyle = "rgba(200,230,240,0.55)";
+    ctx.font = `${Math.max(9, w * 0.045)}px monospace`;
+    const ts = new Date(t).toISOString().slice(11, 19);
+    ctx.fillText(ts, 8, h - 8);
+  }
+
+  const feedState = { cams: [], raf: 0, anomalyCam: -1, anomalyUntil: 0, mode: "idle" };
+
+  function mountCams(el, count, startIdx) {
+    el.innerHTML = "";
+    const list = [];
+    for (let i = 0; i < count; i++) {
+      const room = { ...ROOMS[(startIdx + i) % ROOMS.length], _seed: (startIdx + i) * 1.7 };
+      const wrap = document.createElement("div");
+      wrap.className = "cam";
+      wrap.innerHTML = `<div class="label">CAM-${String(i + 1).padStart(2, "0")} · ${room.name}</div><div class="rec"></div>`;
+      const canvas = document.createElement("canvas");
+      canvas.width = 320; canvas.height = 180;
+      wrap.appendChild(canvas);
+      el.appendChild(wrap);
+      list.push({ wrap, canvas, ctx: canvas.getContext("2d"), room, idx: i });
+    }
+    return list;
+  }
+
+  const hard = mountCams(document.getElementById("cams-hard"), 12, 0);
+  const stream = mountCams(document.getElementById("cams-stream"), 6, 2);
+  const eventC = mountCams(document.getElementById("cams-event"), 6, 5);
+
+  function activeList() {
+    if (idx === 1) return hard;
+    if (idx === 2) return stream;
+    if (idx === 3) return eventC;
+    return [];
+  }
+
+  function loop(now) {
+    const list = activeList();
+    list.forEach((c) => {
+      const anom = feedState.anomalyCam === c.idx && now < feedState.anomalyUntil;
+      drawRoom(c.ctx, c.canvas.width, c.canvas.height, c.room, now + c.idx * 200, anom);
+      // 枠の色付けはイベント通知後のみ（逐次・目視ではチートにならない）
+      c.wrap.classList.remove("suspect");
+      c.wrap.classList.toggle(
+        "alerted",
+        anom && feedState.mode === "event" && feedState.alertAt && now >= feedState.alertAt
+      );
+    });
+    feedState.raf = requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // stream log
+  const logEl = document.getElementById("stream-log");
+  function rebuildLog(focusCam) {
+    const lines = [];
+    // 異常行は色付きで出るが、連続ブロックにはしない（他CAMの行で挟む）
+    // → 順に読まないと見逃す／でもカメラ切替よりは見つけやすい
+    for (let i = 0; i < 56; i++) {
+      let cam = ((i * 3 + Math.floor(i / 5)) % 6) + 1;
+      let hi = false;
+      let msg = ["frame ok", "bitrate nom", "pts ok", "frame ok", "gop ok"][i % 5];
+      if (focusCam) {
+        // 約5行に1回、focusCamの異常行を差し込む（隣り合わない）
+        if (i % 5 === 2) {
+          cam = focusCam;
+          hi = true;
+          msg = ["motion↑", "pix_delta high", "scene change?", "motion↑", "edge spike"][Math.floor(i / 5) % 5];
+        } else if (i % 5 === 0) {
+          // 正常な focusCam 行も混ぜる
+          cam = focusCam;
+          msg = "frame ok";
+        }
+      }
+      lines.push(
+        `<div class="${hi ? "hi" : ""}">[12:4${(i % 10)}.${String((i * 17) % 100).padStart(2, "0")}] CAM-${String(cam).padStart(2, "0")} ${msg}</div>`
+      );
+    }
+    logEl.innerHTML = lines.concat(lines).join("");
+    logEl.style.animation = "none";
+    logEl.offsetHeight;
+    logEl.style.transition = "transform 20s linear";
+    logEl.style.transform = "translateY(0)";
+    requestAnimationFrame(() => { logEl.style.transform = "translateY(-45%)"; });
+  }
+  rebuildLog(null);
+
+  function show(i) {
+    clearTimers();
+    idx = (i + scenes.length) % scenes.length;
+    scenes.forEach((s, n) => s.classList.toggle("on", n === idx));
+    document.getElementById("scene-label").textContent = `${String(idx + 1).padStart(2, "0")} / ${String(scenes.length).padStart(2, "0")}`;
+    t0 = performance.now(); acc = 0;
+    document.getElementById("bar").style.width = "0%";
+
+    feedState.anomalyCam = -1;
+    feedState.anomalyUntil = 0;
+    feedState.mode = "idle";
+    feedState.alertAt = 0;
+    [...hard, ...stream, ...eventC].forEach((c) => c.wrap.classList.remove("suspect", "alerted"));
+    const eventBox = document.getElementById("event-box");
+    eventBox.className = "";
+    eventBox.style.color = "var(--muted)";
+    eventBox.style.fontFamily = "IBM Plex Mono, monospace";
+    eventBox.textContent = "待機中… まだ静か";
+    rebuildLog(null);
+
+    // anomalies are DELAYED and BRIEF so you can't instantly see them
+    if (idx === 1) {
+      feedState.mode = "eyes";
+      const cam = 7;
+      timers.push(setTimeout(() => {
+        feedState.anomalyCam = cam;
+        feedState.anomalyUntil = performance.now() + 2200; // brief window
+      }, 3500));
+    }
+    if (idx === 2) {
+      feedState.mode = "stream";
+      const cam = 3;
+      timers.push(setTimeout(() => {
+        feedState.anomalyCam = cam;
+        feedState.anomalyUntil = performance.now() + 5000;
+        rebuildLog(cam + 1);
+      }, 2800));
+    }
+    if (idx === 3) {
+      feedState.mode = "event";
+      const cam = 2;
+      // anomaly in video is subtle/brief; alert arrives as the "cheat"
+      timers.push(setTimeout(() => {
+        feedState.anomalyCam = cam;
+        feedState.anomalyUntil = performance.now() + 6000;
+        feedState.alertAt = performance.now() + 900; // notification slightly after start
+        timers.push(setTimeout(() => {
+          eventBox.className = "toast-alert";
+          eventBox.innerHTML = "<strong>ALERT</strong> · CAM-03 · 入口 · 変化速度異常<br/><span style='opacity:.85'>event-driven · いま通知</span>";
+        }, 900));
+      }, 3200));
+    }
+  }
+
+  function tick(now) {
+    if (playing) {
+      const elapsed = now - t0 + acc;
+      const dur = DUR[idx];
+      const p = Math.min(1, elapsed / dur);
+      document.getElementById("bar").style.width = (p * 100).toFixed(1) + "%";
+      if (p >= 1) show(idx + 1);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  document.getElementById("btn-next").onclick = () => show(idx + 1);
+  document.getElementById("btn-prev").onclick = () => show(idx - 1);
+  document.getElementById("btn-pause").onclick = function () {
+    if (playing) { acc += performance.now() - t0; playing = false; this.textContent = "再生"; }
+    else { t0 = performance.now(); playing = true; this.textContent = "一時停止"; }
+  };
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(idx + 1); }
+    if (e.key === "ArrowLeft") show(idx - 1);
+    if (e.key === "f") {
+      const el = document.getElementById("stage");
+      if (!document.fullscreenElement) el.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+  });
+
+  show(0);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

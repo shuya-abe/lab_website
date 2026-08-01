@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>何秒で気づける？ IoTリアルタイム体験</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7FMX3SBTV"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7FMX3SBTV');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg0: #07111c; --bg1: #12283a; --panel: rgba(12, 28, 42, 0.88);
+    --line: rgba(130, 190, 220, 0.22); --text: #eaf5fa; --muted: #8fabc0;
+    --cyan: #3fd0ff; --teal: #1ec8b2; --alert: #ff6a3d; --ok: #3dd68c; --warn: #ffd166;
+  }
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    margin: 0; color: var(--text); font-family: "Zen Kaku Gothic New", sans-serif;
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(63,208,255,.2), transparent 55%),
+      radial-gradient(900px 600px at -5% 90%, rgba(30,200,178,.14), transparent 50%),
+      radial-gradient(600px 400px at 50% 40%, rgba(255,106,61,.05), transparent 60%),
+      linear-gradient(165deg, var(--bg0), var(--bg1) 55%, #16344a);
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .4;
+    background-image:
+      linear-gradient(rgba(63,208,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63,208,255,.04) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at 50% 30%, #000, transparent 75%);
+  }
+  button { font: inherit; }
+  .screen { display: none; min-height: 100vh; padding: 20px clamp(12px, 2.5vw, 32px) 36px; position: relative; z-index: 1; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none;} }
+  @keyframes blink { 50% { opacity: .35; } }
+  @keyframes ripple { from { box-shadow: 0 0 0 0 rgba(255,106,61,.45);} to { box-shadow: 0 0 0 16px rgba(255,106,61,0);} }
+  @keyframes floaty { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-4px);} }
+
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: var(--muted); font-size: .9rem; }
+  .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: blink 1.6s infinite; }
+  h1 { margin: 0 0 10px; font-weight: 900; line-height: 1.15; font-size: clamp(1.55rem, 4vw, 2.7rem); }
+  h1 span { color: var(--cyan); }
+  .lead { max-width: 44rem; color: var(--muted); line-height: 1.65; margin: 0 0 20px; }
+
+  .hero-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .mode-card {
+    border: 1px solid var(--line); background: var(--panel); border-radius: 16px; padding: 18px;
+    cursor: pointer; text-align: left; color: inherit; text-decoration: none;
+    box-shadow: 0 16px 40px rgba(0,0,0,.3); transition: .15s ease;
+  }
+  .mode-card:hover { border-color: rgba(63,208,255,.5); transform: translateY(-2px); }
+  .mode-card .kicker { color: var(--teal); font-size: .72rem; letter-spacing: .1em; margin-bottom: 8px; }
+  .mode-card h2 { margin: 0 0 6px; font-size: 1.12rem; }
+  .mode-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
+  .topbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .status-strip {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px;
+    background: rgba(0,0,0,.28); font-size: .75rem; color: var(--muted);
+    font-family: "IBM Plex Mono", monospace;
+  }
+  .chip b { color: var(--text); font-weight: 600; }
+  .chip .rec { width: 7px; height: 7px; border-radius: 50%; background: #ff4d4d; animation: blink 1.1s infinite; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 7px; }
+  .btn {
+    border: 1px solid var(--line); background: rgba(18,36,54,.92); color: var(--text);
+    border-radius: 11px; padding: 9px 12px; cursor: pointer;
+  }
+  .btn:hover { border-color: rgba(63,208,255,.45); }
+  .btn.primary { background: linear-gradient(135deg, #1aa9d8, #1ec8b2); color: #041018; border: none; font-weight: 700; }
+  .btn.danger { background: linear-gradient(135deg, #ff6a3d, #e23d6a); color: #fff; border: none; font-weight: 700; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  .layout { display: grid; gap: 14px; grid-template-columns: 1.55fr .85fr; }
+  @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+
+  .floor {
+    border: 1px solid var(--line); border-radius: 18px; padding: 12px;
+    background:
+      linear-gradient(180deg, rgba(20,50,70,.35), rgba(8,18,28,.55)),
+      radial-gradient(ellipse at 50% 0%, rgba(63,208,255,.08), transparent 55%),
+      #0c1c2a;
+    box-shadow: 0 20px 50px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+    position: relative; overflow: hidden;
+  }
+  .floor::before {
+    content: ""; position: absolute; inset: auto -20% -40% -20%; height: 60%;
+    background: radial-gradient(ellipse at center, rgba(30,200,178,.07), transparent 65%);
+    pointer-events: none; animation: floaty 6s ease-in-out infinite;
+  }
+  .floor-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .floor-head .tag {
+    font-size: .75rem; color: var(--muted); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 10px; background: rgba(0,0,0,.25);
+  }
+
+  .zones { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
+  @media (max-width: 720px) { .zones { grid-template-columns: 1fr; } }
+  .zone {
+    background: rgba(255,255,255,.035); border: 1px solid rgba(130,180,205,.16);
+    border-radius: 14px; padding: 10px; backdrop-filter: blur(6px);
+  }
+  .zone-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .72rem; letter-spacing: .08em; color: #9dc0d2; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .zone-title .ico {
+    width: 18px; height: 18px; border-radius: 6px; display: grid; place-items: center;
+    background: rgba(63,208,255,.12); color: var(--cyan); font-size: .7rem;
+  }
+  .tiles { display: grid; gap: 6px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .zone.wide .tiles { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  @media (max-width: 560px) { .tiles, .zone.wide .tiles { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+  .tile {
+    appearance: none; width: 100%; text-align: left; color: inherit;
+    border: 1px solid rgba(130,180,205,.18); background: rgba(6,16,26,.78);
+    border-radius: 11px; padding: 8px 9px 7px; cursor: default;
+    transition: border-color .15s, background .15s, transform .12s;
+  }
+  .tile.clickable { cursor: pointer; }
+  .tile.clickable:active { transform: scale(.98); }
+  .tile .name { font-size: .66rem; color: var(--muted); line-height: 1.2; margin-bottom: 2px; }
+  .tile .val {
+    font-family: "IBM Plex Mono", monospace; font-size: .95rem; font-weight: 600;
+    letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .spark {
+    display: block; width: 100%; height: 18px; margin-top: 4px;
+    border-radius: 3px; background: rgba(0,0,0,.25);
+  }
+  .ratebar {
+    margin-top: 4px; height: 3px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden;
+  }
+  .ratebar > i {
+    display: block; height: 100%; width: 12%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--teal), var(--cyan));
+    transition: width .2s ease;
+  }
+  .tile.alert { border-color: var(--alert); background: rgba(90,24,12,.78); animation: ripple .9s ease infinite; }
+  .tile.alert .val { color: #ffb399; }
+  .tile.correct { border-color: var(--ok); background: rgba(61,214,140,.14); }
+  .tile.wrong { border-color: var(--alert); }
+
+  .side { display: grid; gap: 12px; align-content: start; }
+  .panel {
+    border: 1px solid var(--line); border-radius: 16px; background: var(--panel);
+    padding: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.3);
+  }
+  .panel h3 { margin: 0 0 8px; font-size: .95rem; }
+  .timer { font-family: "IBM Plex Mono", monospace; font-size: clamp(1.8rem, 4.2vw, 2.8rem); font-weight: 600; }
+  .timer.hot { color: var(--alert); }
+
+  .batch { display: grid; gap: 4px; max-height: 260px; overflow: auto; }
+  .batch .row {
+    display: grid; grid-template-columns: 1.4fr .9fr .55fr; gap: 6px;
+    padding: 6px 8px; border-radius: 8px; background: rgba(0,0,0,.22); font-size: .76rem;
+  }
+  .batch .head { color: var(--muted); font-size: .68rem; position: sticky; top: 0; background: #102030; z-index: 1; }
+
+  .notice { border-left: 3px solid var(--cyan); padding: 7px 9px; color: var(--muted); font-size: .86rem; line-height: 1.5; }
+  .notice.alert { border-left-color: var(--alert); color: #ffd5c8; background: rgba(255,106,61,.08); border-radius: 0 8px 8px 0; }
+  .hint-mini { color: var(--muted); font-size: .76rem; margin-top: 6px; line-height: 1.45; }
+
+  .round-tabs { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tab {
+    padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; color: var(--muted); cursor: pointer; font-size: .86rem;
+  }
+  .tab.on { background: rgba(63,208,255,.14); color: var(--cyan); border-color: rgba(63,208,255,.4); }
+
+  .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .score { text-align: center; padding: 10px 6px; border-radius: 12px; background: rgba(0,0,0,.25); border: 1px solid var(--line); }
+  .score .n { font-family: "IBM Plex Mono", monospace; font-size: 1.2rem; font-weight: 600; }
+  .score .l { color: var(--muted); font-size: .7rem; margin-top: 3px; }
+
+  /* R2 activity panel */
+  .activity { display: grid; gap: 6px; }
+  .act-row {
+    display: grid; grid-template-columns: 1.1fr 1fr 42px; gap: 8px; align-items: center;
+    font-size: .75rem;
+  }
+  .act-row .nm { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .act-track { height: 8px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+  .act-track > i { display: block; height: 100%; width: 8%; background: linear-gradient(90deg, #1ec8b2, #3fd0ff); border-radius: 99px; transition: width .15s linear; }
+  .act-row.hot .act-track > i { background: linear-gradient(90deg, #ffd166, #ff6a3d); }
+  .act-row.hot .hz { color: var(--warn); font-weight: 700; }
+  .hz { font-family: "IBM Plex Mono", monospace; text-align: right; color: var(--muted); }
+
+  .log {
+    height: 150px; overflow: hidden; position: relative;
+    border-radius: 10px; border: 1px solid var(--line); background: #07131c;
+  }
+  .log-inner {
+    position: absolute; inset: 0; padding: 8px 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: .7rem; line-height: 1.45; color: #9ec4d6;
+  }
+  .log .ev { color: var(--warn); }
+  .log .burst { color: #ffb070; font-weight: 600; }
+
+  .compare { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+  @media (max-width: 900px) { .compare { grid-template-columns: 1fr; } }
+  .compare .panel { min-height: 300px; display: flex; flex-direction: column; }
+  .compare .panel h3 { color: var(--cyan); }
+  .event-slot {
+    min-height: 64px; display: flex; align-items: center;
+    border: 1px dashed rgba(255,106,61,.35); border-radius: 12px;
+    padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,.18);
+  }
+  .event-door { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: rgba(8,18,28,.72); }
+  .event-door.alert { border-color: var(--alert); animation: ripple .9s ease infinite; }
+  .event-door .name { font-size: .75rem; color: var(--muted); }
+  .event-door .val { font-family: "IBM Plex Mono", monospace; font-size: 1.3rem; font-weight: 600; margin-top: 4px; }
+  .big-msg {
+    margin-top: 14px; padding: 16px; border-radius: 14px;
+    border: 1px solid rgba(63,208,255,.3);
+    background: linear-gradient(135deg, rgba(63,208,255,.1), rgba(30,200,178,.07));
+    line-height: 1.65;
+  }
+  .keys { margin-top: 8px; color: var(--muted); font-size: .76rem; line-height: 1.55; }
+  kbd {
+    display: inline-block; min-width: 1.3em; text-align: center; padding: 1px 5px;
+    border-radius: 5px; border: 1px solid var(--line); background: rgba(0,0,0,.35);
+    font-family: "IBM Plex Mono", monospace; font-size: .7rem;
+  }
+  .toast {
+    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(16px);
+    background: rgba(7,17,28,.94); border: 1px solid rgba(255,106,61,.45);
+    color: #fff; padding: 10px 16px; border-radius: 999px; opacity: 0; transition: .2s ease;
+    z-index: 50; pointer-events: none; max-width: 90vw;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <section id="home" class="screen active">
+    <div class="brand"><span class="dot"></span>福井工業大学 経営情報学科 · Open Campus 2026</div>
+    <h1>何秒で気づける？<br /><span>IoTのリアルタイム性</span>を体験</h1>
+    <p class="lead">平常も揺れるラボのセンサ。異変は「値がゆっくり大きくずれていく」＋「変化が速くなる」。統計・逐次・イベントで気づき方がどう変わるかを体感します。</p>
+    <div class="hero-grid">
+      <button class="mode-card" data-go="host"><div class="kicker">PROJECTOR / HOST</div><h2>投影用ミッション</h2><p>18センサのフロアで進行。R1→R2→R3。</p></button>
+      <button class="mode-card" data-go="player"><div class="kicker">PHONE / PLAYER</div><h2>参加者用ミッション</h2><p>スマホで観察して、異変タイルをタップ。</p></button>
+      <button class="mode-card" data-go="compare"><div class="kicker">DEMO</div><h2>違いを見るアニメ</h2><p>統計／逐次／イベントの3通り比較。</p></button>
+      <a class="mode-card" href="../explainer/"><div class="kicker">EXPLAINER</div><h2>異変探しゲームで説明</h2><p>監視カメラゲー比喩の導入アニメ。</p></a>
+    </div>
+  </section>
+
+  <section id="host" class="screen">
+    <div class="topbar">
+      <div class="brand" style="margin:0"><span class="dot"></span><strong>HOST</strong></div>
+      <div class="controls">
+        <button class="btn" data-go="home">戻る</button>
+        <button class="btn" id="host-reset">リセット</button>
+        <button class="btn primary" id="host-start">ラウンド開始</button>
+        <button class="btn danger" id="host-trigger" disabled>異変を起こす</button>
+        <button class="btn" id="host-reveal" disabled>正解を表示</button>
+      </div>
+    </div>
+    <div class="status-strip">
+      <div class="chip"><span class="rec"></span> LIVE</div>
+      <div class="chip" id="host-clock">--:--:--</div>
+      <div class="chip">SENSORS <b>18</b></div>
+      <div class="chip">STATUS <b id="host-live-tag">IDLE</b></div>
+      <div class="chip">LINK <b>OK</b></div>
+    </div>
+    <div class="round-tabs" id="host-rounds">
+      <button class="tab on" data-round="0">R1 昨日の統計</button>
+      <button class="tab" data-round="1">R2 逐次＋更新密度</button>
+      <button class="tab" data-round="2">R3 イベント通知</button>
+    </div>
+    <div class="layout">
+      <div class="floor">
+        <div class="floor-head">
+          <div class="tag">LAB FLOOR · SMART BUILDING</div>
+          <div class="tag" id="host-mode-tag">観察待機</div>
+        </div>
+        <div class="zones" id="host-zones"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>気づきタイマー</h3>
+          <div class="timer" id="host-timer">0.00s</div>
+          <div class="notice" id="host-hint">開始→異変。異変開始直後は通常値。そこから徐々に大きくずれ、変化も速くなります。</div>
+        </div>
+        <div class="panel">
+          <h3 id="host-data-title">データ表示</h3>
+          <div id="host-data-body"></div>
+        </div>
+        <div class="panel">
+          <h3>結果メモ</h3>
+          <div class="scoreboard">
+            <div class="score"><div class="n" id="score-r1">—</div><div class="l">R1</div></div>
+            <div class="score"><div class="n" id="score-r2">—</div><div class="l">R2</div></div>
+            <div class="score"><div class="n" id="score-r3">—</div><div class="l">R3</div></div>
+          </div>
+          <p class="keys"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> / <kbd>Space</kbd> / <kbd>E</kbd> / <kbd>R</kbd></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="player" class="screen">
+    <div class="topbar">
+      <div class="brand" style="margin:0"><span class="dot"></span><strong>PLAYER</strong></div>
+      <div class="controls">
+        <button class="btn" data-go="home">戻る</button>
+        <button class="btn primary" id="player-start">スタート</button>
+        <button class="btn" id="player-retry">リセット</button>
+      </div>
+    </div>
+    <div class="round-tabs" id="player-rounds">
+      <button class="tab on" data-pround="0">R1 統計</button>
+      <button class="tab" data-pround="1">R2 逐次</button>
+      <button class="tab" data-pround="2">R3 イベント</button>
+    </div>
+    <div class="layout">
+      <div class="floor">
+        <div class="floor-head">
+          <div class="tag">タップで回答</div>
+          <div class="timer" id="player-timer" style="font-size:1.25rem">0.00s</div>
+        </div>
+        <div class="zones" id="player-zones"></div>
+        <p class="hint-mini">異変タイルを直接タップ。開始直後は普通の値→だんだん大きくずれる＋速くなる。</p>
+      </div>
+      <div class="side">
+        <div class="panel"><h3>状況</h3><div class="notice" id="player-msg">スタートで観察開始。</div></div>
+        <div class="panel" id="player-feed"></div>
+        <div class="panel">
+          <h3>ベスト</h3>
+          <div class="scoreboard">
+            <div class="score"><div class="n" id="pb-r1">—</div><div class="l">R1</div></div>
+            <div class="score"><div class="n" id="pb-r2">—</div><div class="l">R2</div></div>
+            <div class="score"><div class="n" id="pb-r3">—</div><div class="l">R3</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="compare" class="screen">
+    <div class="topbar">
+      <div class="brand" style="margin:0"><span class="dot"></span><strong>COMPARE</strong></div>
+      <div class="controls">
+        <button class="btn" data-go="home">戻る</button>
+        <button class="btn primary" id="compare-run">デモ再生</button>
+      </div>
+    </div>
+    <h1 style="font-size:clamp(1.35rem,3.2vw,2.1rem)">同じ出来事、届き方が違う</h1>
+    <p class="lead">「入口ドア」の異変を3つの見せ方で。</p>
+    <div class="compare">
+      <div class="panel"><h3>① 過去の統計</h3><div class="batch" id="cmp-batch"></div><p class="notice" style="margin-top:auto;padding-top:12px">集計では“いま”が平均に溶ける。</p></div>
+      <div class="panel"><h3>② 逐次＋密度</h3><div class="log" style="height:160px"><div class="log-inner" id="cmp-stream"></div></div><p class="notice" style="margin-top:auto;padding-top:12px">同じIDが連続＝更新が速い合図。</p></div>
+      <div class="panel"><h3>③ イベント駆動</h3><div class="event-slot"><div class="notice" id="cmp-event">待機中…</div></div><div class="event-door" id="cmp-door"><div class="name">入口ドア</div><div class="val">閉寄り</div></div><p class="notice" style="margin-top:auto;padding-top:12px">変化の意味だけが届く。</p></div>
+    </div>
+    <div class="big-msg">センサを増やすほど目視は不利。IoTの価値は<strong>必要な変化を、必要なタイミングで届ける</strong>こと。</div>
+  </section>
+
+<script>
+(() => {
+  const ZONES = [
+    { id: "entry", title: "入口・廊下", ico: "門", wide: false, sensors: ["door_ent", "motion_ent", "cam_ent", "btn_ent"] },
+    { id: "work", title: "作業スペース", ico: "机", wide: true, sensors: ["temp_desk", "hum_desk", "light_desk", "power_desk", "motion_work", "noise_work"] },
+    { id: "shelf", title: "保管棚", ico: "箱", wide: false, sensors: ["stock_a", "stock_b", "weight_sh", "vib_sh"] },
+    { id: "window", title: "窓側・環境", ico: "窓", wide: false, sensors: ["temp_win", "light_win", "co2", "air"] },
+  ];
+
+  // anomDelta: 最終的に大きくずれる量（開始時は0、徐々に到達）
+  // slow/fast: 位相速度
+  const SENSORS = [
+    { id: "door_ent", label: "入口ドア", batchAvg: "開閉14回", idle: "閉", active: "開", slowP: 0.02, fastP: 0.7, text: "入口ドアの開閉が急増", kind: "state" },
+    { id: "motion_ent", label: "入口人感", batchAvg: "検知22回", idle: "なし", active: "あり", slowP: 0.04, fastP: 0.65, text: "入口人感が頻発", kind: "state" },
+    { id: "cam_ent", label: "入口カメラ", batchAvg: "録画24h", idle: "正常", active: "ノイズ", slowP: 0.02, fastP: 0.55, text: "カメラ状態が不安定", kind: "state" },
+    { id: "btn_ent", label: "呼び鈴", batchAvg: "押下3回", idle: "OFF", active: "ON", slowP: 0.015, fastP: 0.5, text: "呼び鈴が頻発", kind: "state" },
+
+    { id: "temp_desk", label: "机上温度", batchAvg: "24.2°C", baseN: 24.2, amp: 0.2, anomDelta: 6.5, slow: 0.06, fast: 0.95, unit: "°C", digits: 1, text: "机上温度が上昇中", kind: "num" },
+    { id: "hum_desk", label: "机上湿度", batchAvg: "48%", baseN: 48, amp: 0.8, anomDelta: 22, slow: 0.05, fast: 0.9, unit: "%", digits: 0, text: "湿度が上昇中", kind: "num" },
+    { id: "light_desk", label: "机上照度", batchAvg: "430 lx", baseN: 430, amp: 10, anomDelta: -280, slow: 0.07, fast: 1.0, unit: " lx", digits: 0, text: "机上が暗くなっていく", kind: "num" },
+    { id: "power_desk", label: "机コンセント", batchAvg: "86 W", baseN: 86, amp: 3, anomDelta: 70, slow: 0.06, fast: 1.05, unit: " W", digits: 0, text: "消費電力が増えていく", kind: "num" },
+    { id: "motion_work", label: "作業区人感", batchAvg: "検知61回", idle: "なし", active: "あり", slowP: 0.1, fastP: 0.7, text: "作業区の人感が頻発", kind: "state" },
+    { id: "noise_work", label: "作業区騒音", batchAvg: "41 dB", baseN: 41, amp: 1.0, anomDelta: 28, slow: 0.07, fast: 1.0, unit: " dB", digits: 0, text: "騒音が上がっていく", kind: "num" },
+
+    { id: "stock_a", label: "棚A在庫", batchAvg: "12個", baseN: 12, amp: 0, anomDelta: -9, slow: 0.02, fast: 0.55, unit: "", digits: 0, text: "棚A在庫が減っていく", kind: "num", stepwise: true },
+    { id: "stock_b", label: "棚B在庫", batchAvg: "9個", baseN: 9, amp: 0, anomDelta: -7, slow: 0.02, fast: 0.55, unit: "", digits: 0, text: "棚B在庫が減っていく", kind: "num", stepwise: true },
+    { id: "weight_sh", label: "棚重量", batchAvg: "18.4 kg", baseN: 18.4, amp: 0.05, anomDelta: -4.2, slow: 0.05, fast: 0.9, unit: " kg", digits: 2, text: "棚重量が減っていく", kind: "num" },
+    { id: "vib_sh", label: "棚振動", batchAvg: "0.12 g", baseN: 0.12, amp: 0.02, anomDelta: 0.55, slow: 0.08, fast: 1.2, unit: " g", digits: 2, text: "棚振動が増していく", kind: "num" },
+
+    { id: "temp_win", label: "窓際温度", batchAvg: "23.6°C", baseN: 23.6, amp: 0.25, anomDelta: 5.8, slow: 0.05, fast: 0.9, unit: "°C", digits: 1, text: "窓際温度が上昇中", kind: "num" },
+    { id: "light_win", label: "窓照度", batchAvg: "620 lx", baseN: 620, amp: 14, anomDelta: -400, slow: 0.06, fast: 1.0, unit: " lx", digits: 0, text: "窓側が暗くなっていく", kind: "num" },
+    { id: "co2", label: "CO₂", batchAvg: "780 ppm", baseN: 780, amp: 12, anomDelta: 520, slow: 0.05, fast: 0.95, unit: " ppm", digits: 0, text: "CO₂が増えていく", kind: "num" },
+    { id: "air", label: "空気質", batchAvg: "指数82", baseN: 82, amp: 1.2, anomDelta: -35, slow: 0.05, fast: 0.9, unit: "", digits: 0, text: "空気質が下がっていく", kind: "num" },
+  ];
+
+  const byId = Object.fromEntries(SENSORS.map((s) => [s.id, s]));
+  const TICK_MS = 140;
+  const DRIFT_MS = 9000; // 異変開始からフルずれまでの時間
+
+  const ROUND_META = [
+    { title: "R1 昨日の統計レポート", hint: "統計は全部正常。フロアでは、どこか1つが“通常値からゆっくり大きくずれ＋速く揺れる”。", mode: "batch" },
+    { title: "R2 逐次ログ＋更新密度", hint: "右の『更新密度』バーが伸びているセンサが怪しい。ログでも同じIDが連続して出ます。", mode: "stream" },
+    { title: "R3 イベント駆動アラート", hint: "システムが異常を検知して通知。目で追わなくても届く。", mode: "event" },
+  ];
+
+  const state = {
+    live: {}, phase: {}, hist: {},
+    updates: {},
+    anomalyId: null, anomalyAt: 0, frame: 0,
+    revealed: false, // 正解表示するまでハイライト禁止
+  };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  function toast(msg) {
+    const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+    clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("show"), 2000);
+  }
+  function go(id) {
+    $$(".screen").forEach((s) => s.classList.remove("active"));
+    $("#" + id).classList.add("active");
+    location.hash = id;
+  }
+  $$("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
+  if (location.hash.slice(1) && $("#" + location.hash.slice(1))) go(location.hash.slice(1));
+
+  function formatNum(s, n) { return n.toFixed(s.digits) + (s.unit || ""); }
+
+  function progress() {
+    if (!state.anomalyId || !state.anomalyAt) return 0;
+    return Math.min(1, (performance.now() - state.anomalyAt) / DRIFT_MS);
+  }
+
+  function resetLive() {
+    state.frame = 0; state.anomalyId = null; state.anomalyAt = 0; state.revealed = false;
+    SENSORS.forEach((s, i) => {
+      state.phase[s.id] = Math.random() * 6 + i;
+      state.hist[s.id] = [];
+      state.updates[s.id] = 0.08 + Math.random() * 0.05;
+      if (s.kind === "num") state.live[s.id] = s.baseN;
+      else state.live[s.id] = s.idle;
+    });
+  }
+
+  function stepSensor(id) {
+    const s = byId[id];
+    const isAnom = state.anomalyId === id;
+    const p = isAnom ? progress() : 0; // 0→1 で徐々に本格化
+    // ease-in so early seconds stay near normal
+    const ease = p * p;
+
+    if (s.kind === "num") {
+      const omega = s.slow + (s.fast - s.slow) * (0.15 + 0.85 * ease);
+      state.phase[id] += omega;
+      const center = s.baseN + s.anomDelta * ease;
+      let n = center + Math.sin(state.phase[id]) * s.amp * (1 + ease * 1.2);
+      if (s.stepwise) n = Math.round(n);
+      // update intensity for R2 meters
+      const prev = state.live[id];
+      state.live[id] = n;
+      const delta = Math.abs(n - (prev ?? n));
+      const targetU = isAnom ? (0.25 + ease * 0.7) : 0.08;
+      state.updates[id] = state.updates[id] * 0.75 + targetU * 0.25 + Math.min(0.15, delta * 0.02);
+      pushHist(id, n, s);
+      return formatNum(s, n);
+    }
+
+    const flipP = s.slowP + (s.fastP - s.slowP) * ease;
+    if (Math.random() < flipP) state.live[id] = state.live[id] === s.idle ? s.active : s.idle;
+    else if (!isAnom && Math.random() < 0.65) state.live[id] = s.idle;
+    state.updates[id] = state.updates[id] * 0.8 + (isAnom ? (0.3 + ease * 0.65) : 0.1) * 0.2;
+    pushHist(id, state.live[id] === s.active ? 1 : 0, s);
+    return state.live[id];
+  }
+
+  function pushHist(id, n, s) {
+    const h = state.hist[id];
+    let v = typeof n === "number" ? n : n;
+    if (s.kind === "num") {
+      // normalize around base for sparkline
+      const span = Math.max(Math.abs(s.anomDelta) * 0.6, s.amp * 4, 1);
+      v = (n - s.baseN) / span;
+    }
+    h.push(v);
+    if (h.length > 24) h.shift();
+  }
+
+  function drawSpark(canvas, id) {
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+    const hist = state.hist[id] || [];
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = (state.revealed && state.anomalyId === id)
+      ? "rgba(255,160,100,0.9)"
+      : "rgba(63,208,255,0.55)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    hist.forEach((v, i) => {
+      const x = (i / Math.max(hist.length - 1, 1)) * (w - 2) + 1;
+      const y = h * 0.5 - Math.max(-1, Math.min(1, v)) * (h * 0.42);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  function buildZones(containerId, { clickable = false, prefix = "v" } = {}) {
+    const root = document.getElementById(containerId);
+    root.innerHTML = ZONES.map((z) => {
+      const tiles = z.sensors.map((id) => {
+        const s = byId[id];
+        return `<button type="button" class="tile${clickable ? " clickable" : ""}" data-id="${id}" data-prefix="${prefix}" ${clickable ? "" : "tabindex='-1'"}>
+          <div class="name">${s.label}</div>
+          <div class="val" id="${prefix}-${id}">--</div>
+          <canvas class="spark" id="${prefix}-sp-${id}" width="120" height="18"></canvas>
+          <div class="ratebar"><i id="${prefix}-rb-${id}"></i></div>
+        </button>`;
+      }).join("");
+      return `<div class="zone${z.wide ? " wide" : ""}"><div class="zone-title"><span class="ico">${z.ico}</span>${z.title}</div><div class="tiles">${tiles}</div></div>`;
+    }).join("");
+  }
+
+  function paintAll(prefix, { step = true } = {}) {
+    if (step) state.frame += 1;
+    SENSORS.forEach((s) => {
+      const text = step ? stepSensor(s.id) : displayValue(s.id);
+      const el = document.getElementById(`${prefix}-${s.id}`);
+      if (el) el.textContent = text;
+      const tile = el?.closest(".tile");
+      // 色付けは正解表示後のみ
+      if (tile) tile.classList.toggle("alert", state.revealed && state.anomalyId === s.id);
+      const rb = document.getElementById(`${prefix}-rb-${s.id}`);
+      if (rb) rb.style.width = Math.min(100, state.updates[s.id] * 100) + "%";
+      drawSpark(document.getElementById(`${prefix}-sp-${s.id}`), s.id);
+    });
+  }
+
+  function displayValue(id) {
+    const s = byId[id];
+    if (s.kind === "num") return formatNum(s, state.live[id] ?? s.baseN);
+    return state.live[id] ?? s.idle;
+  }
+
+  function clearTileMarks(prefix) {
+    $$(`[data-prefix="${prefix}"]`).forEach((t) => t.classList.remove("alert", "correct", "wrong"));
+  }
+
+  function batchRows() {
+    return [`<div class="row head"><span>センサ</span><span>昨日平均/集計</span><span>判定</span></div>`,
+      ...SENSORS.map((s) => `<div class="row"><span>${s.label}</span><span>${s.batchAvg}</span><span>正常</span></div>`)].join("");
+  }
+
+  function activityHTML() {
+    const rows = SENSORS.map((s) => {
+      const u = state.updates[s.id] || 0;
+      return `<div class="act-row" data-act="${s.id}">
+        <div class="nm">${s.label}</div>
+        <div class="act-track"><i style="width:${Math.min(100, u * 100)}%"></i></div>
+        <div class="hz">${(u * 4.2).toFixed(1)}Hz</div>
+      </div>`;
+    }).join("");
+    return `<div class="hint-mini" style="margin:0 0 8px">見方：バーが長い／Hzが高い＝いま更新が速い（色は全部同じ。正解表示までは色で教えません）。</div><div class="activity" id="activity-list">${rows}</div>
+      <div class="log" style="margin-top:10px;height:110px"><div class="log-inner" id="host-log"></div></div>`;
+  }
+
+  function refreshActivity() {
+    const list = $("#activity-list");
+    if (!list) return;
+    SENSORS.forEach((s) => {
+      const row = list.querySelector(`[data-act="${s.id}"]`);
+      if (!row) return;
+      const u = state.updates[s.id] || 0;
+      row.querySelector("i").style.width = Math.min(100, u * 100) + "%";
+      row.querySelector(".hz").textContent = (u * 4.2).toFixed(1) + "Hz";
+      // ハイライト色は正解後のみ
+      row.classList.toggle("hot", state.revealed && state.anomalyId === s.id);
+    });
+    const log = $("#host-log") || $("#player-log");
+    if (log) fillStreamLog(log, !!state.anomalyId);
+  }
+
+  function fillStreamLog(el, withEvent) {
+    if (!el) return;
+    const lines = [];
+    for (let i = 0; i < 40; i++) {
+      // 異変センサは出現頻度だけ上げる（色付け・⚡表記なし）
+      let s;
+      if (withEvent && state.anomalyId && i % 3 === 0) s = byId[state.anomalyId];
+      else s = SENSORS[i % SENSORS.length];
+      const t = `12:${String(30 + (i % 20)).padStart(2, "0")}.${String((i * 13) % 100).padStart(2, "0")}`;
+      let val;
+      if (s.kind === "num") {
+        const e = (withEvent && s.id === state.anomalyId) ? Math.min(1, progress()) : 0;
+        val = formatNum(s, s.baseN + s.anomDelta * e * e + Math.sin(i) * s.amp);
+      } else val = (withEvent && s.id === state.anomalyId && i % 2) ? s.active : s.idle;
+      lines.push(`<div>[${t}] ${s.id} ${val}</div>`);
+    }
+    el.innerHTML = lines.join("");
+  }
+
+  // clock
+  setInterval(() => {
+    const d = new Date();
+    const el = $("#host-clock");
+    if (el) el.textContent = d.toTimeString().slice(0, 8);
+  }, 1000);
+
+  // ---- HOST ----
+  const host = { round: 0, running: false, t0: 0, raf: null, tick: null };
+  buildZones("host-zones", { prefix: "hv" });
+  resetLive(); paintAll("hv");
+
+  function renderHostData() {
+    const meta = ROUND_META[host.round];
+    $("#host-data-title").textContent = meta.title;
+    $("#host-hint").textContent = meta.hint;
+    $("#host-mode-tag").textContent = meta.mode === "batch" ? "BATCH VIEW" : meta.mode === "stream" ? "STREAM + DENSITY" : "EVENT MODE";
+    const body = $("#host-data-body");
+    if (meta.mode === "batch") {
+      body.innerHTML = `<div class="batch">${batchRows()}</div><p class="hint-mini">表は更新されない。フロアの値と速度を見て。</p>`;
+    } else if (meta.mode === "stream") {
+      body.innerHTML = activityHTML();
+      fillStreamLog($("#host-log"), false);
+    } else {
+      body.innerHTML = `<div class="notice">イベント待機中…</div><div id="host-event-box" style="margin-top:8px"></div>`;
+    }
+  }
+
+  function hostSetRound(r) {
+    host.round = r;
+    $$("#host-rounds .tab").forEach((t) => t.classList.toggle("on", Number(t.dataset.round) === r));
+    hostReset(false); renderHostData();
+  }
+  function hostReset(soft) {
+    cancelAnimationFrame(host.raf); clearInterval(host.tick);
+    host.running = false; host.t0 = 0;
+    resetLive(); clearTileMarks("hv");
+    $("#host-timer").textContent = "0.00s"; $("#host-timer").classList.remove("hot");
+    $("#host-trigger").disabled = true; $("#host-reveal").disabled = true;
+    $("#host-live-tag").textContent = "IDLE";
+    paintAll("hv"); if (!soft) renderHostData();
+  }
+  function hostStart() {
+    hostReset(true); host.running = true;
+    $("#host-trigger").disabled = false; $("#host-live-tag").textContent = "WATCHING";
+    $("#host-hint").textContent = "観察中。全部ゆるく揺れ中。異変後は『徐々に大きく＋速く』。";
+    host.tick = setInterval(() => {
+      const mode = ROUND_META[host.round].mode;
+      paintAll("hv");
+      if (mode === "stream") refreshActivity();
+    }, TICK_MS);
+    toast("ラウンド開始");
+  }
+  function hostTrigger() {
+    if (!host.running || state.anomalyId) return;
+    const s = SENSORS[Math.floor(Math.random() * SENSORS.length)];
+    state.anomalyId = s.id; state.anomalyAt = performance.now();
+    host.t0 = performance.now();
+    $("#host-trigger").disabled = true; $("#host-reveal").disabled = false;
+    $("#host-timer").classList.add("hot"); $("#host-live-tag").textContent = "DRIFTING";
+    const mode = ROUND_META[host.round].mode;
+    if (mode === "batch") $("#host-hint").textContent = "異変開始（色付けなし）。今はまだほぼ通常値→これからずれます。";
+    else if (mode === "stream") {
+      $("#host-hint").textContent = "更新密度バーの長さとログの出現頻度を見て（色は変わりません）。";
+      refreshActivity();
+    } else {
+      const box = $("#host-event-box");
+      setTimeout(() => {
+        if (box) box.innerHTML = `<div class="notice alert">ALERT · ${s.label} · 値ドリフト＋変化速度異常<br/>${s.text}</div>`;
+        toast("ALERT: " + s.label);
+      }, 1200);
+      $("#host-hint").textContent = "まもなくイベント通知…（タイルの色は正解表示まで付きません）";
+    }
+    const tick = () => {
+      if (!host.t0) return;
+      $("#host-timer").textContent = ((performance.now() - host.t0) / 1000).toFixed(2) + "s";
+      host.raf = requestAnimationFrame(tick);
+    };
+    host.raf = requestAnimationFrame(tick);
+  }
+  function hostReveal() {
+    if (!state.anomalyId) return;
+    const s = byId[state.anomalyId];
+    const sec = ((performance.now() - host.t0) / 1000).toFixed(2) + "s";
+    cancelAnimationFrame(host.raf);
+    state.revealed = true;
+    $(`#score-r${host.round + 1}`).textContent = sec;
+    paintAll("hv", { step: false });
+    if (ROUND_META[host.round].mode === "stream") refreshActivity();
+    $("#host-hint").textContent = `正解: ${s.label}（${s.text}） / ${sec}`;
+    toast(`正解は「${s.label}」`);
+  }
+  $$("#host-rounds .tab").forEach((t) => t.addEventListener("click", () => hostSetRound(Number(t.dataset.round))));
+  $("#host-start").onclick = hostStart;
+  $("#host-trigger").onclick = hostTrigger;
+  $("#host-reveal").onclick = hostReveal;
+  $("#host-reset").onclick = () => hostSetRound(host.round);
+  hostSetRound(0);
+  window.addEventListener("keydown", (e) => {
+    if (!$("#host").classList.contains("active") || e.target.matches("input,textarea")) return;
+    if (e.key === "1") hostSetRound(0);
+    if (e.key === "2") hostSetRound(1);
+    if (e.key === "3") hostSetRound(2);
+    if (e.key === " ") { e.preventDefault(); hostStart(); }
+    if (e.key.toLowerCase() === "e") hostTrigger();
+    if (e.key.toLowerCase() === "r") hostReveal();
+  });
+
+  // ---- PLAYER ----
+  const player = { round: 0, t0: 0, answered: false, raf: null, wait: null, tick: null, best: [null, null, null], armed: false };
+  buildZones("player-zones", { clickable: true, prefix: "pv" });
+
+  function playerSetRound(r) {
+    player.round = r;
+    $$("#player-rounds .tab").forEach((t) => t.classList.toggle("on", Number(t.dataset.pround) === r));
+    playerReset();
+  }
+  function renderPlayerFeed() {
+    const feed = $("#player-feed");
+    const mode = ROUND_META[player.round].mode;
+    if (mode === "batch") {
+      feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">あなたの手元データ（統計）</h3><div class="batch">${batchRows()}</div><p class="hint-mini">18件すべて正常のまま。</p>`;
+    } else if (mode === "stream") {
+      feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">更新密度＋ログ</h3>${activityHTML().replace('id="host-log"', 'id="player-log"')}`;
+      fillStreamLog($("#player-log"), !!state.anomalyId);
+    } else {
+      feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">通知トレイ</h3><div class="notice" id="player-event">イベント待機中…</div>`;
+    }
+  }
+  function playerReset() {
+    cancelAnimationFrame(player.raf); clearTimeout(player.wait); clearInterval(player.tick);
+    player.t0 = 0; player.answered = false; player.armed = false;
+    resetLive(); clearTileMarks("pv");
+    $("#player-timer").textContent = "0.00s"; $("#player-timer").classList.remove("hot");
+    $("#player-msg").textContent = "スタートで観察開始。異変タイルをタップ。";
+    paintAll("pv"); renderPlayerFeed();
+  }
+  function playerStart() {
+    playerReset(); player.armed = true;
+    $("#player-msg").textContent = "観察中… 全部ゆるく揺れ中。";
+    player.tick = setInterval(() => {
+      const mode = ROUND_META[player.round].mode;
+      paintAll("pv");
+      if (mode === "stream") refreshActivity();
+    }, TICK_MS);
+    player.wait = setTimeout(() => {
+      const s = SENSORS[Math.floor(Math.random() * SENSORS.length)];
+      state.anomalyId = s.id; state.anomalyAt = performance.now();
+      player.t0 = performance.now(); $("#player-timer").classList.add("hot");
+      const mode = ROUND_META[player.round].mode;
+      if (mode === "batch") $("#player-msg").textContent = "どこかが徐々にずれ始めた。統計は正常。タップして。";
+      else if (mode === "stream") {
+        renderPlayerFeed();
+        $("#player-msg").textContent = "更新密度バーが伸びるセンサを探せ。";
+      } else {
+        setTimeout(() => {
+          const ev = $("#player-event");
+          if (ev) { ev.className = "notice alert"; ev.textContent = `ALERT · ${s.label} · 値ドリフト＋速度異常`; }
+          if (navigator.vibrate) navigator.vibrate([30, 40, 60]);
+          $("#player-msg").textContent = "通知が来た！該当タイルをタップ（色は答え合わせまで付きません）。";
+        }, 1100);
+        $("#player-msg").textContent = "まもなく通知…";
+      }
+      const tick = () => {
+        if (!player.t0 || player.answered) return;
+        $("#player-timer").textContent = ((performance.now() - player.t0) / 1000).toFixed(2) + "s";
+        player.raf = requestAnimationFrame(tick);
+      };
+      player.raf = requestAnimationFrame(tick);
+    }, 2000 + Math.random() * 2500);
+  }
+  function playerAnswer(id) {
+    if (!player.armed || !state.anomalyId || player.answered) return;
+    player.answered = true;
+    cancelAnimationFrame(player.raf); clearInterval(player.tick);
+    state.revealed = true;
+    const sec = (performance.now() - player.t0) / 1000;
+    const ok = id === state.anomalyId;
+    paintAll("pv", { step: false });
+    $$(`[data-prefix="pv"]`).forEach((t) => {
+      if (t.dataset.id === state.anomalyId) t.classList.add("correct", "alert");
+      if (t.dataset.id === id && !ok) t.classList.add("wrong");
+    });
+    if (ok) {
+      $("#player-msg").textContent = `正解！ ${sec.toFixed(2)}s · ${byId[id].text}`;
+      if (player.best[player.round] == null || sec < player.best[player.round]) {
+        player.best[player.round] = sec;
+        $(`#pb-r${player.round + 1}`).textContent = sec.toFixed(2) + "s";
+      }
+      toast("気づき成功");
+    } else {
+      $("#player-msg").textContent = `不正解… 正解は「${byId[state.anomalyId].label}」`;
+      toast("ざんねん");
+    }
+  }
+  $("#player-zones").addEventListener("click", (e) => {
+    const tile = e.target.closest(".tile");
+    if (tile) playerAnswer(tile.dataset.id);
+  });
+  $$("#player-rounds .tab").forEach((t) => t.addEventListener("click", () => playerSetRound(Number(t.dataset.pround))));
+  $("#player-start").onclick = playerStart;
+  $("#player-retry").onclick = playerReset;
+  playerSetRound(0);
+
+  // compare
+  function renderCmpBatch() {
+    $("#cmp-batch").innerHTML = [
+      `<div class="row head"><span>指標</span><span>昨日</span><span>今日</span></div>`,
+      `<div class="row"><span>入口ドア開閉</span><span>14回</span><span>15回</span></div>`,
+      `<div class="row"><span>机上温度平均</span><span>24.2°C</span><span>24.4°C</span></div>`,
+      `<div class="row"><span>棚A在庫末</span><span>12</span><span>12</span></div>`,
+      `<div class="row"><span>異常フラグ</span><span>0</span><span>0</span></div>`,
+    ].join("");
+  }
+  renderCmpBatch();
+  $("#compare-run").onclick = () => {
+    renderCmpBatch();
+    const stream = $("#cmp-stream");
+    const lines = [];
+    for (let i = 0; i < 20; i++) lines.push(`<div>[12:40.${String(i).padStart(2,"0")}] cam_${(i%6)+1} ok</div>`);
+    for (let i = 0; i < 8; i++) {
+      const cam = (i % 2 === 0) ? "door_ent" : `cam_${(i%5)+1}`;
+      lines.push(`<div>[12:40.${String(20+i).padStart(2,"0")}] ${cam} ${cam === "door_ent" ? "state=閉" : "ok"}</div>`);
+    }
+    stream.innerHTML = lines.join("");
+    $("#cmp-event").className = "notice"; $("#cmp-event").textContent = "待機中…";
+    const door = $("#cmp-door"); door.classList.remove("alert"); door.querySelector(".val").textContent = "閉寄り";
+    setTimeout(() => {
+      $("#cmp-event").className = "notice alert";
+      $("#cmp-event").textContent = "ALERT · 入口ドア · 値ドリフト＋速度異常";
+      door.classList.add("alert"); door.querySelector(".val").textContent = "開が増加中";
+      toast("イベント到着");
+    }, 1600);
+  };
+})();
+</script>
+</body>
+</html>
