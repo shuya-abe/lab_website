@@ -369,6 +369,15 @@ footer {
     margin-top: 1rem;
 }
 
+.privacy-policy a {
+    color: var(--text-muted);
+    text-decoration: underline;
+}
+
+.privacy-policy a:hover {
+    color: var(--primary-color);
+}
+
 .interest-tag {
     display: inline-block;
     background: rgba(255, 255, 255, 0.05);
