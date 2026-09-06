@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Abe Laboratory">
+  <defs>
+    <linearGradient id="abeGrad" x1="28" y1="108" x2="100" y2="20" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#007aff"/>
+      <stop offset="55%" stop-color="#00a8ff"/>
+      <stop offset="100%" stop-color="#00c6ff"/>
+    </linearGradient>
+  </defs>
+  <!-- Hex cell with intentional side gaps -->
+  <path
+    d="M64 14 L104 37 V55 M104 73 V91 L64 114 L24 91 V73 M24 55 V37 Z"
+    fill="none"
+    stroke="url(#abeGrad)"
+    stroke-width="3.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+  <!-- Signal arcs from apex -->
+  <path d="M48 34c7.5-9 24.5-9 32 0" fill="none" stroke="url(#abeGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40 26c12-14.5 36-14.5 48 0" fill="none" stroke="url(#abeGrad)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Letter A as network mast -->
+  <g fill="none" stroke="url(#abeGrad)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 44 L38 96"/>
+    <path d="M64 44 L90 96"/>
+    <path d="M48 74 H80"/>
+  </g>
+  <!-- Nodes -->
+  <g fill="url(#abeGrad)">
+    <circle cx="64" cy="44" r="5.8"/>
+    <circle cx="38" cy="96" r="5.2"/>
+    <circle cx="90" cy="96" r="5.2"/>
+  </g>
+</svg>

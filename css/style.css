@@ -69,6 +69,42 @@ header h1 a {
     -webkit-text-fill-color: transparent;
 }
 
+/* Site brand / logo */
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-logo {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.site-brand-text {
+    background: linear-gradient(45deg, #fff, #bbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header h1 a.site-brand {
+    background: none;
+    -webkit-text-fill-color: unset;
+}
+
+@media (max-width: 850px) {
+    .site-logo {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+
 /* Hamburger Menu Toggle */
 .menu-toggle {
     display: none;
