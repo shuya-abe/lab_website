@@ -1,6 +1,7 @@
 :root {
     --primary-color: #007aff;
     --background-color: #0a0a0c;
+    --secondary-color: rgba(10, 10, 12, 0.92);
     --card-bg: rgba(255, 255, 255, 0.05);
     --text-color: #e0e0e6;
     --text-muted: #a0a0ab;
@@ -110,20 +111,49 @@ header h1 a.site-brand {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 26px;
-    height: 18px;
+    width: 28px;
+    height: 20px;
     cursor: pointer;
     z-index: 1100;
     margin-left: 1rem;
+    color: #ffffff;
+    filter: none;
+    opacity: 1;
+    isolation: isolate;
 }
 
 .menu-toggle span {
     display: block;
-    height: 2px;
+    height: 3px;
     width: 100%;
-    background-color: #fff;
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #ffffff;
+    background-color: #ffffff;
+    border-radius: 0;
+    opacity: 1;
+    filter: none;
+    mix-blend-mode: normal;
+    box-shadow: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-toggle:hover span,
+.menu-toggle:focus span,
+.menu-toggle:focus-visible span,
+.menu-toggle.active span,
+.menu-toggle.active:hover span {
+    background: #ffffff;
+    background-color: #ffffff;
+    filter: none;
+    color: #ffffff;
+}
+
+.menu-toggle:hover span:not(:nth-child(2)),
+.menu-toggle:focus span:not(:nth-child(2)),
+.menu-toggle:focus-visible span:not(:nth-child(2)),
+.menu-toggle.active span:not(:nth-child(2)),
+.menu-toggle.active:hover span:not(:nth-child(2)) {
+    opacity: 1;
 }
 
 nav ul {
@@ -199,16 +229,22 @@ nav ul li a:hover {
         border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Toggle Animation */
+    /* Toggle Animation — 3px bars, 20px tall → ±Y ±8.5px */
     .menu-toggle.active span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
+        transform: translateY(8.5px) rotate(45deg);
+        background: #ffffff;
+        background-color: #ffffff;
+        opacity: 1;
     }
     .menu-toggle.active span:nth-child(2) {
         opacity: 0;
         transform: translateX(10px);
     }
     .menu-toggle.active span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
+        transform: translateY(-8.5px) rotate(-45deg);
+        background: #ffffff;
+        background-color: #ffffff;
+        opacity: 1;
     }
 
     /* Hero Responsiveness */
