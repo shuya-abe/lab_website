@@ -255,12 +255,12 @@ gtag('config', 'G-X7FMX3SBTV');
   <section id="home" class="screen active">
     <div class="brand"><span class="dot"></span>福井工業大学 経営情報学科</div>
     <h1>何秒で気づける？<br /><span>IoTのリアルタイム性</span>を体験</h1>
-    <p class="lead">平常も揺れるラボのセンサ。異変は「値がゆっくり大きくずれていく」＋「変化が速くなる」。統計・逐次・イベントで気づき方がどう変わるかを体感します。</p>
+    <p class="lead">ラボのセンサは平常時も少し揺れます。異変では値がゆっくり大きくずれ、変化の速さも上がります。統計・逐次・イベントで、気づき方がどう変わるかを体感します。</p>
     <div class="hero-grid">
-      <button class="mode-card" data-go="host"><div class="kicker">PROJECTOR / HOST</div><h2>投影用ミッション</h2><p>18センサのフロアで進行。R1→R2→R3。</p></button>
-      <button class="mode-card" data-go="player"><div class="kicker">PHONE / PLAYER</div><h2>参加者用ミッション</h2><p>スマホで観察して、異変タイルをタップ。</p></button>
-      <button class="mode-card" data-go="compare"><div class="kicker">DEMO</div><h2>違いを見るアニメ</h2><p>統計／逐次／イベントの3通り比較。</p></button>
-      <a class="mode-card" href="../explainer/"><div class="kicker">EXPLAINER</div><h2>異変探しゲームで説明</h2><p>監視カメラゲー比喩の導入アニメ。</p></a>
+      <button class="mode-card" data-go="host"><div class="kicker">PROJECTOR / HOST</div><h2>投影用ミッション</h2><p>18センサのフロアで進行します。R1→R2→R3。</p></button>
+      <button class="mode-card" data-go="player"><div class="kicker">PHONE / PLAYER</div><h2>参加者用ミッション</h2><p>スマホで観察し、異変タイルをタップします。</p></button>
+      <button class="mode-card" data-go="compare"><div class="kicker">DEMO</div><h2>違いを見るデモ</h2><p>統計・逐次・イベントの3通りを並べて比べます。</p></button>
+      <a class="mode-card" href="../explainer/"><div class="kicker">EXPLAINER</div><h2>異変探しゲームで知る</h2><p>監視カメラゲームに例えた導入アニメです。</p></a>
     </div>
   </section>
 
@@ -299,7 +299,7 @@ gtag('config', 'G-X7FMX3SBTV');
         <div class="panel">
           <h3>気づきタイマー</h3>
           <div class="timer" id="host-timer">0.00s</div>
-          <div class="notice" id="host-hint">開始→異変。異変開始直後は通常値。そこから徐々に大きくずれ、変化も速くなります。</div>
+          <div class="notice" id="host-hint">開始のあと異変を起こします。直後は通常値のままで、そこから徐々に大きくずれ、変化も速くなります。</div>
         </div>
         <div class="panel">
           <h3 id="host-data-title">データ表示</h3>
@@ -339,10 +339,10 @@ gtag('config', 'G-X7FMX3SBTV');
           <div class="timer" id="player-timer" style="font-size:1.25rem">0.00s</div>
         </div>
         <div class="zones" id="player-zones"></div>
-        <p class="hint-mini">異変タイルを直接タップ。開始直後は普通の値→だんだん大きくずれる＋速くなる。</p>
+        <p class="hint-mini">異変タイルを直接タップしてください。開始直後は普通の値で、だんだん大きくずれ、変化も速くなります。</p>
       </div>
       <div class="side">
-        <div class="panel"><h3>状況</h3><div class="notice" id="player-msg">スタートで観察開始。</div></div>
+        <div class="panel"><h3>状況</h3><div class="notice" id="player-msg">スタートで観察を始めます。</div></div>
         <div class="panel" id="player-feed"></div>
         <div class="panel">
           <h3>ベスト</h3>
@@ -364,14 +364,14 @@ gtag('config', 'G-X7FMX3SBTV');
         <button class="btn primary" id="compare-run">デモ再生</button>
       </div>
     </div>
-    <h1 style="font-size:clamp(1.35rem,3.2vw,2.1rem)">同じ出来事、届き方が違う</h1>
-    <p class="lead">「入口ドア」の異変を3つの見せ方で。</p>
+    <h1 style="font-size:clamp(1.35rem,3.2vw,2.1rem)">同じ出来事でも、届き方が違う</h1>
+    <p class="lead">「入口ドア」の異変を、3つの見せ方で比べます。</p>
     <div class="compare">
-      <div class="panel"><h3>① 過去の統計</h3><div class="batch" id="cmp-batch"></div><p class="notice" style="margin-top:auto;padding-top:12px">集計では“いま”が平均に溶ける。</p></div>
-      <div class="panel"><h3>② 逐次＋密度</h3><div class="log" style="height:160px"><div class="log-inner" id="cmp-stream"></div></div><p class="notice" style="margin-top:auto;padding-top:12px">同じIDが連続＝更新が速い合図。</p></div>
-      <div class="panel"><h3>③ イベント駆動</h3><div class="event-slot"><div class="notice" id="cmp-event">待機中…</div></div><div class="event-door" id="cmp-door"><div class="name">入口ドア</div><div class="val">閉寄り</div></div><p class="notice" style="margin-top:auto;padding-top:12px">変化の意味だけが届く。</p></div>
+      <div class="panel"><h3>① 過去の統計</h3><div class="batch" id="cmp-batch"></div><p class="notice" style="margin-top:auto;padding-top:12px">集計では、「いま」の変化が平均に埋もれます。</p></div>
+      <div class="panel"><h3>② 逐次＋密度</h3><div class="log" style="height:160px"><div class="log-inner" id="cmp-stream"></div></div><p class="notice" style="margin-top:auto;padding-top:12px">同じIDが連続すると、更新が速い合図です。</p></div>
+      <div class="panel"><h3>③ イベント駆動</h3><div class="event-slot"><div class="notice" id="cmp-event">待機中…</div></div><div class="event-door" id="cmp-door"><div class="name">入口ドア</div><div class="val">閉寄り</div></div><p class="notice" style="margin-top:auto;padding-top:12px">変化の意味だけが届きます。</p></div>
     </div>
-    <div class="big-msg">センサを増やすほど目視は不利。IoTの価値は<strong>必要な変化を、必要なタイミングで届ける</strong>こと。</div>
+    <div class="big-msg">センサを増やすほど、目視だけでは不利になります。IoTの価値は<strong>必要な変化を、必要なタイミングで届ける</strong>ことです。</div>
   </section>
 
 <script>
@@ -414,9 +414,9 @@ gtag('config', 'G-X7FMX3SBTV');
   const DRIFT_MS = 9000; // 異変開始からフルずれまでの時間
 
   const ROUND_META = [
-    { title: "R1 昨日の統計レポート", hint: "統計は全部正常。フロアでは、どこか1つが“通常値からゆっくり大きくずれ＋速く揺れる”。", mode: "batch" },
-    { title: "R2 逐次ログ＋更新密度", hint: "右の『更新密度』バーが伸びているセンサが怪しい。ログでも同じIDが連続して出ます。", mode: "stream" },
-    { title: "R3 イベント駆動アラート", hint: "システムが異常を検知して通知。目で追わなくても届く。", mode: "event" },
+    { title: "R1 昨日の統計レポート", hint: "統計はすべて正常です。フロアでは、どれか1つが通常値からゆっくり大きくずれ、揺れも速くなります。", mode: "batch" },
+    { title: "R2 逐次ログ＋更新密度", hint: "右の「更新密度」バーが伸びているセンサを疑ってください。ログでも同じIDが連続して出ます。", mode: "stream" },
+    { title: "R3 イベント駆動アラート", hint: "システムが異常を検知して通知します。目で追わなくても届きます。", mode: "event" },
   ];
 
   const state = {
@@ -575,7 +575,7 @@ gtag('config', 'G-X7FMX3SBTV');
         <div class="hz">${(u * 4.2).toFixed(1)}Hz</div>
       </div>`;
     }).join("");
-    return `<div class="hint-mini" style="margin:0 0 8px">見方：バーが長い／Hzが高い＝いま更新が速い（色は全部同じ。正解表示までは色で教えません）。</div><div class="activity" id="activity-list">${rows}</div>
+    return `<div class="hint-mini" style="margin:0 0 8px">見方：バーが長い、またはHzが高いほど、いま更新が速い状態です（色はすべて同じで、正解表示まで色では教えません）。</div><div class="activity" id="activity-list">${rows}</div>
       <div class="log" style="margin-top:10px;height:110px"><div class="log-inner" id="host-log"></div></div>`;
   }
 
@@ -633,7 +633,7 @@ gtag('config', 'G-X7FMX3SBTV');
     $("#host-mode-tag").textContent = meta.mode === "batch" ? "BATCH VIEW" : meta.mode === "stream" ? "STREAM + DENSITY" : "EVENT MODE";
     const body = $("#host-data-body");
     if (meta.mode === "batch") {
-      body.innerHTML = `<div class="batch">${batchRows()}</div><p class="hint-mini">表は更新されない。フロアの値と速度を見て。</p>`;
+      body.innerHTML = `<div class="batch">${batchRows()}</div><p class="hint-mini">表は更新されません。フロアの値と変化の速さを見てください。</p>`;
     } else if (meta.mode === "stream") {
       body.innerHTML = activityHTML();
       fillStreamLog($("#host-log"), false);
@@ -659,7 +659,7 @@ gtag('config', 'G-X7FMX3SBTV');
   function hostStart() {
     hostReset(true); host.running = true;
     $("#host-trigger").disabled = false; $("#host-live-tag").textContent = "WATCHING";
-    $("#host-hint").textContent = "観察中。全部ゆるく揺れ中。異変後は『徐々に大きく＋速く』。";
+    $("#host-hint").textContent = "観察中です。センサはどれもゆるく揺れています。異変のあと、ずれは徐々に大きく、変化も速くなります。";
     host.tick = setInterval(() => {
       const mode = ROUND_META[host.round].mode;
       paintAll("hv");
@@ -675,17 +675,17 @@ gtag('config', 'G-X7FMX3SBTV');
     $("#host-trigger").disabled = true; $("#host-reveal").disabled = false;
     $("#host-timer").classList.add("hot"); $("#host-live-tag").textContent = "DRIFTING";
     const mode = ROUND_META[host.round].mode;
-    if (mode === "batch") $("#host-hint").textContent = "異変開始（色付けなし）。今はまだほぼ通常値→これからずれます。";
+    if (mode === "batch") $("#host-hint").textContent = "異変を開始しました（色付けなし）。まだほぼ通常値ですが、これからずれていきます。";
     else if (mode === "stream") {
-      $("#host-hint").textContent = "更新密度バーの長さとログの出現頻度を見て（色は変わりません）。";
+      $("#host-hint").textContent = "更新密度バーの長さと、ログへの出現頻度を見てください（色は変わりません）。";
       refreshActivity();
     } else {
       const box = $("#host-event-box");
       setTimeout(() => {
-        if (box) box.innerHTML = `<div class="notice alert">ALERT · ${s.label} · 値ドリフト＋変化速度異常<br/>${s.text}</div>`;
+        if (box) box.innerHTML = `<div class="notice alert">ALERT · ${s.label} · 値のずれ＋変化速度の異常<br/>${s.text}</div>`;
         toast("ALERT: " + s.label);
       }, 1200);
-      $("#host-hint").textContent = "まもなくイベント通知…（タイルの色は正解表示まで付きません）";
+      $("#host-hint").textContent = "まもなくイベント通知があります（タイルの色は正解表示まで付きません）。";
     }
     const tick = () => {
       if (!host.t0) return;
@@ -735,7 +735,7 @@ gtag('config', 'G-X7FMX3SBTV');
     const feed = $("#player-feed");
     const mode = ROUND_META[player.round].mode;
     if (mode === "batch") {
-      feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">あなたの手元データ（統計）</h3><div class="batch">${batchRows()}</div><p class="hint-mini">18件すべて正常のまま。</p>`;
+      feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">あなたの手元データ（統計）</h3><div class="batch">${batchRows()}</div><p class="hint-mini">18件とも正常のままです。</p>`;
     } else if (mode === "stream") {
       feed.innerHTML = `<h3 style="margin:0 0 8px;font-size:.95rem">更新密度＋ログ</h3>${activityHTML().replace('id="host-log"', 'id="player-log"')}`;
       fillStreamLog($("#player-log"), !!state.anomalyId);
@@ -748,12 +748,12 @@ gtag('config', 'G-X7FMX3SBTV');
     player.t0 = 0; player.answered = false; player.armed = false;
     resetLive(); clearTileMarks("pv");
     $("#player-timer").textContent = "0.00s"; $("#player-timer").classList.remove("hot");
-    $("#player-msg").textContent = "スタートで観察開始。異変タイルをタップ。";
+    $("#player-msg").textContent = "スタートで観察を始めます。異変タイルをタップしてください。";
     paintAll("pv"); renderPlayerFeed();
   }
   function playerStart() {
     playerReset(); player.armed = true;
-    $("#player-msg").textContent = "観察中… 全部ゆるく揺れ中。";
+    $("#player-msg").textContent = "観察中です。センサはどれもゆるく揺れています。";
     player.tick = setInterval(() => {
       const mode = ROUND_META[player.round].mode;
       paintAll("pv");
@@ -764,18 +764,18 @@ gtag('config', 'G-X7FMX3SBTV');
       state.anomalyId = s.id; state.anomalyAt = performance.now();
       player.t0 = performance.now(); $("#player-timer").classList.add("hot");
       const mode = ROUND_META[player.round].mode;
-      if (mode === "batch") $("#player-msg").textContent = "どこかが徐々にずれ始めた。統計は正常。タップして。";
+      if (mode === "batch") $("#player-msg").textContent = "どこかが徐々にずれ始めました。統計は正常のままです。タイルをタップしてください。";
       else if (mode === "stream") {
         renderPlayerFeed();
-        $("#player-msg").textContent = "更新密度バーが伸びるセンサを探せ。";
+        $("#player-msg").textContent = "更新密度バーが伸びるセンサを探してください。";
       } else {
         setTimeout(() => {
           const ev = $("#player-event");
-          if (ev) { ev.className = "notice alert"; ev.textContent = `ALERT · ${s.label} · 値ドリフト＋速度異常`; }
+          if (ev) { ev.className = "notice alert"; ev.textContent = `ALERT · ${s.label} · 値のずれ＋速度異常`; }
           if (navigator.vibrate) navigator.vibrate([30, 40, 60]);
-          $("#player-msg").textContent = "通知が来た！該当タイルをタップ（色は答え合わせまで付きません）。";
+          $("#player-msg").textContent = "通知が届きました。該当タイルをタップしてください（色は答え合わせまで付きません）。";
         }, 1100);
-        $("#player-msg").textContent = "まもなく通知…";
+        $("#player-msg").textContent = "まもなく通知があります…";
       }
       const tick = () => {
         if (!player.t0 || player.answered) return;
@@ -843,7 +843,7 @@ gtag('config', 'G-X7FMX3SBTV');
     const door = $("#cmp-door"); door.classList.remove("alert"); door.querySelector(".val").textContent = "閉寄り";
     setTimeout(() => {
       $("#cmp-event").className = "notice alert";
-      $("#cmp-event").textContent = "ALERT · 入口ドア · 値ドリフト＋速度異常";
+      $("#cmp-event").textContent = "ALERT · 入口ドア · 値のずれ＋速度異常";
       door.classList.add("alert"); door.querySelector(".val").textContent = "開が増加中";
       toast("イベント到着");
     }, 1600);
