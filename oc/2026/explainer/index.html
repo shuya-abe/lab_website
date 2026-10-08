@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>異変探しゲームでわかる IoT</title>
+<meta name="description" content="監視カメラゲームに例えて、IoTのリアルタイム性を説明する短いアニメです。" />
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7FMX3SBTV"></script>
 <script>
@@ -51,6 +52,7 @@ gtag('config', 'G-X7FMX3SBTV');
   .controls { display: flex; gap: 6px; }
   .btn { border: 1px solid var(--line); background: rgba(15,28,40,.92); color: var(--text); border-radius: 10px; padding: 7px 11px; font-size: .82rem; }
   .btn.primary { border: 0; background: linear-gradient(135deg, #1aa9d8, #1ec8b2); color: #041018; font-weight: 700; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
 
   .cams { flex: 1; min-height: 0; display: grid; gap: 7px; }
   .cams.c12 { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
@@ -117,15 +119,43 @@ gtag('config', 'G-X7FMX3SBTV');
     line-height: 1.55; font-size: clamp(.9rem, 1.7vw, 1.08rem);
   }
   .hint-pill { color: var(--muted); font-size: .78rem; }
+  .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .cta-row { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .cta-row a {
+    display: inline-flex; align-items: center; text-decoration: none;
+    border: 0; border-radius: 10px; padding: 9px 14px; font-size: .9rem; font-weight: 700;
+    background: linear-gradient(135deg, #1aa9d8, #1ec8b2); color: #041018;
+  }
+  .cta-row a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .crumb { margin: 10px 16px 0; font-size: .85rem; position: relative; z-index: 5; }
+  .crumb a { color: var(--cyan); }
+  @media (max-width: 640px) {
+    body { overflow-x: hidden; }
+    .stage {
+      width: 100vw; height: auto; min-height: calc(100svh - 48px);
+      aspect-ratio: auto;
+    }
+    .scene { padding-bottom: 72px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scene { transition: none; }
+    .cam .rec { animation: none; }
+    .toast-alert { animation: none; }
+  }
 </style>
 </head>
 <body>
-  <p style="margin:10px 16px 0;font-size:.85rem;position:relative;z-index:5"><a href="https://www.abe-network.com/" style="color:var(--cyan,#3fd0ff)">阿部研究室トップ</a> · <a href="https://www.abe-network.com/works.html" style="color:var(--cyan,#3fd0ff)">Works</a> · <a href="../" style="color:var(--cyan,#3fd0ff)">IoT体験</a></p>
-  <div class="stage" id="stage">
+  <nav class="crumb" aria-label="パンくず">
+    <a href="/">阿部研究室トップ</a> · <a href="/works.html">Works</a> · <a href="../">IoT体験</a>
+  </nav>
+  <div class="stage" id="stage" role="region" aria-label="IoT説明アニメ">
     <section class="scene on" data-scene="0">
       <div class="kicker">INTRO · IoT EXPLAINER</div>
       <div class="hero-art">
-        <img class="hero-img" src="keyart.png" alt="IoT体験キーアート" />
+        <picture>
+          <source srcset="keyart.webp" type="image/webp" />
+          <img class="hero-img" src="keyart.jpg" width="1280" height="853" alt="IoT体験キーアート" decoding="async" fetchpriority="high" />
+        </picture>
         <div class="hero-copy">
           <h1 class="title">異変探しゲームでわかる<br /><em>IoTのリアルタイム性</em></h1>
           <p class="sub" style="margin-top:8px">監視カメラを目で探すあのゲーム。<br />データの届き方を変えると、難易度が一気に変わります。</p>
@@ -180,6 +210,9 @@ gtag('config', 'G-X7FMX3SBTV');
         <div class="card c3"><div class="lv">R3 · イベント</div><h4>ほぼチート</h4><p>変化速度や値の異常など、意味のある変化だけが通知されます。</p></div>
       </div>
       <div class="end-line">IoTの面白さは「つなぐ」ことより、<strong>異変にいま気づけること</strong>です。では、何秒で気づける？</div>
+      <div class="cta-row">
+        <a href="../mission/">ミッションに挑戦する</a>
+      </div>
     </section>
 
     <div class="hud">
@@ -197,7 +230,8 @@ gtag('config', 'G-X7FMX3SBTV');
 (() => {
   const DUR = [6000, 9000, 9500, 9500, 9000];
   const scenes = [...document.querySelectorAll(".scene")];
-  let idx = 0, playing = true, t0 = performance.now(), acc = 0;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let idx = 0, playing = !reduceMotion, t0 = performance.now(), acc = 0;
   const timers = [];
   const clearTimers = () => { while (timers.length) clearTimeout(timers.pop()); };
 
@@ -414,13 +448,24 @@ gtag('config', 'G-X7FMX3SBTV');
   }
   rebuildLog(null);
 
+  const pauseBtn = document.getElementById("btn-pause");
+  const nextBtn = document.getElementById("btn-next");
+  if (reduceMotion) pauseBtn.textContent = "再生";
+
   function show(i) {
     clearTimers();
-    idx = (i + scenes.length) % scenes.length;
+    idx = Math.max(0, Math.min(scenes.length - 1, i));
     scenes.forEach((s, n) => s.classList.toggle("on", n === idx));
     document.getElementById("scene-label").textContent = `${String(idx + 1).padStart(2, "0")} / ${String(scenes.length).padStart(2, "0")}`;
     t0 = performance.now(); acc = 0;
     document.getElementById("bar").style.width = "0%";
+    const atEnd = idx === scenes.length - 1;
+    nextBtn.disabled = atEnd;
+    if (atEnd && playing) {
+      playing = false;
+      pauseBtn.textContent = "再生";
+      document.getElementById("bar").style.width = "100%";
+    }
 
     feedState.anomalyCam = -1;
     feedState.anomalyUntil = 0;
@@ -474,19 +519,34 @@ gtag('config', 'G-X7FMX3SBTV');
       const dur = DUR[idx];
       const p = Math.min(1, elapsed / dur);
       document.getElementById("bar").style.width = (p * 100).toFixed(1) + "%";
-      if (p >= 1) show(idx + 1);
+      if (p >= 1) {
+        if (idx >= scenes.length - 1) {
+          playing = false;
+          pauseBtn.textContent = "再生";
+        } else {
+          show(idx + 1);
+        }
+      }
     }
     requestAnimationFrame(tick);
   }
 
-  document.getElementById("btn-next").onclick = () => show(idx + 1);
+  nextBtn.onclick = () => { if (idx < scenes.length - 1) show(idx + 1); };
   document.getElementById("btn-prev").onclick = () => show(idx - 1);
-  document.getElementById("btn-pause").onclick = function () {
+  pauseBtn.onclick = function () {
     if (playing) { acc += performance.now() - t0; playing = false; this.textContent = "再生"; }
-    else { t0 = performance.now(); playing = true; this.textContent = "一時停止"; }
+    else {
+      if (idx === scenes.length - 1) show(0);
+      t0 = performance.now();
+      playing = true;
+      this.textContent = "一時停止";
+    }
   };
   window.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(idx + 1); }
+    if (e.key === "ArrowRight" || e.key === " ") {
+      e.preventDefault();
+      if (idx < scenes.length - 1) show(idx + 1);
+    }
     if (e.key === "ArrowLeft") show(idx - 1);
     if (e.key === "f") {
       const el = document.getElementById("stage");

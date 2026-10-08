@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>何秒で気づける？ IoT体験 · 福井工業大学</title>
+<meta name="description" content="統計・逐次・イベントの3通りで、異変に気づく速さを比べるIoT体験コンテンツです。" />
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7FMX3SBTV"></script>
 <script>
@@ -24,7 +25,14 @@ gtag('config', 'G-X7FMX3SBTV');
   }
   .hero {
     position: relative; min-height: 52vh; display: flex; align-items: flex-end;
-    background: #0a1520 center/cover no-repeat;
+    background-color: #0a1520;
+    background-image: image-set(
+      url("img/keyart.webp") type("image/webp"),
+      url("img/keyart.jpg") type("image/jpeg")
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
   .hero::after {
     content: ""; position: absolute; inset: 0;
@@ -46,14 +54,20 @@ gtag('config', 'G-X7FMX3SBTV');
     background: rgba(12,28,42,.88); transition: .15s ease;
   }
   a.card:hover { border-color: rgba(63,208,255,.5); transform: translateY(-2px); }
+  a.card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
   a.card .t { color: var(--teal); font-size: .72rem; letter-spacing: .1em; margin-bottom: 8px; }
   a.card h2 { margin: 0 0 6px; font-size: 1.2rem; }
   a.card p { margin: 0; font-size: .95rem; }
   footer { margin-top: 36px; color: var(--muted); font-size: .85rem; }
+  footer a { color: var(--cyan); }
+  @media (prefers-reduced-motion: reduce) {
+    a.card { transition: none; }
+    a.card:hover { transform: none; }
+  }
 </style>
 </head>
 <body>
-  <header class="hero" style="background-image:url('img/keyart.png')">
+  <header class="hero" role="banner" aria-label="IoT体験">
     <div class="hero-inner">
       <div class="kicker">FUKUI UNIV. OF TECHNOLOGY · 経営情報学科</div>
       <h1>何秒で気づける？<br /><span>IoTのリアルタイム性</span></h1>
@@ -65,10 +79,11 @@ gtag('config', 'G-X7FMX3SBTV');
       <a class="card" href="mission/"><div class="t">PLAY</div><h2>ミッションに挑戦</h2><p>統計・逐次・イベントの3通りで、異変に気づく速さを比べます。</p></a>
       <a class="card" href="explainer/"><div class="t">INTRO</div><h2>異変探しゲームで知る</h2><p>監視カメラゲームに例えて、IoTのリアルタイム性を説明します。</p></a>
     </div>
-    <footer>福井工業大学 経営情報学部 経営情報学科 · 阿部修也<br />
-      <a href="https://www.abe-network.com/" style="color:var(--cyan)">阿部研究室トップへ</a>
-      · <a href="https://www.abe-network.com/works.html" style="color:var(--cyan)">Works</a><br />
-      学科紹介: <a href="https://www.fukui-ut.ac.jp/subject/management/" style="color:var(--cyan)">fukui-ut.ac.jp/subject/management</a>
+    <footer>
+      福井工業大学 経営情報学部 経営情報学科 · 阿部修也<br />
+      <a href="/">阿部研究室トップへ</a>
+      · <a href="/works.html">Works</a><br />
+      学科紹介: <a href="https://www.fukui-ut.ac.jp/subject/management/" rel="noopener noreferrer">fukui-ut.ac.jp/subject/management</a>
     </footer>
   </main>
 </body>
